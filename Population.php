@@ -153,10 +153,10 @@ private static function poolSelection($pop) {
     private static function mutate($indiv) {
         // Loop through genes
         for ($i=0; $i < $indiv->size(); $i++) {
-            if (  algorithm::random() <= algorithm::$mutationRate) {
-                $gene = individual::$characters[rand(0, strlen(individual::$characters) - 1)];    // Create random gene
-                //echo $gene;
+            if (  Population::random() <= Population::$mutate_rate) {
                 $indiv->setGene($i, $gene); //substitute the gene into the individual
+                //$i merupakan index array
+                $indiv->setSlotWaktu($indiv2, $pop->slot_waktu[$indiv1] );
             }
         }
     }

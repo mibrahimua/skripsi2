@@ -55,6 +55,7 @@ class Population extends Individu
 		print_r($rata);
 		echo "</br>";
 		$index_evo = 0;
+		//test
 			//end of Inisialisasi populasi awal
 			$this->fitnessCalc($individu);
 			$this->getTotalFitness($individu);

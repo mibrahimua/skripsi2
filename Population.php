@@ -35,7 +35,19 @@ class Population extends Individu
 		$individu = new Individu();
 		$individu->setGenPc();
 		//var_dump($individu->size());
-		//SAMPAI SINI, CROSSOVER
+		
+
+		$rata = $individu->getMeanAllPc();
+		echo "Rata-rata nilai_gen semua pc = ";
+		print_r($rata);
+		echo "</br>";
+		$index_evo = 0;
+		//test
+			//end of Inisialisasi populasi awal
+			$this->fitnessCalc($individu);
+			$this->getTotalFitness($individu);
+		echo "<----------------------------------Crossover------------------------------------------->"."<br>";
+		//===================CROSSOVER SECTION==============
 		$indiv1 = $this->poolSelection($individu);
 		echo "</br>";
 		$indiv2 = $this->poolSelection($individu);
@@ -50,15 +62,10 @@ class Population extends Individu
 		echo "</br>";
 		var_dump($individu->slot_waktu[$indiv2]);
 		echo "</br>";
-		$rata = $individu->getMeanAllPc();
-		echo "Rata-rata nilai_gen semua pc = ";
-		print_r($rata);
+		echo "CROSSOVER BERES !!!";
 		echo "</br>";
-		$index_evo = 0;
-		//test
-			//end of Inisialisasi populasi awal
-			$this->fitnessCalc($individu);
-			$this->getTotalFitness($individu);
+		//================END OF CROSSOVER SECTION==============
+
 			echo "<----------------------------------Seleksi Elitism------------------------------------------->"."<br>";
 			$this->seleksiE($individu);
 			echo "debug individu terpilih dari populasi sebelumnya new_kode function setPopulasi";
@@ -123,20 +130,35 @@ private static function poolSelection($pop) {
         // Loop through genes
        
             // Crossover at which point 0..1 , .50 50% of time
-            if (  Population::random() <= Population::$crossover_rate)
+            if (  Population::random() < Population::$crossover_rate)
 			{
 
 				//$waktu = array_keys($indiv1->slot_waktu);
 				//var_dump($indiv1);
-                $pop->setSlotWaktu($indiv2, $pop->slot_waktu[$indiv1] );
-				echo "crossover ke indiv1";
-            } else {
-                $pop->setSlotWaktu($indiv1, $pop->slot_waktu[$indiv2] );
                 
-            	echo "crossover ke indiv2";
+				echo "tidak ada crossover";
+            } else {
+            	$temp = $pop->slot_waktu[$indiv2];
+            	$pop->setSlotWaktu($indiv2, $pop->slot_waktu[$indiv1] );
+
+                $pop->setSlotWaktu($indiv1, $temp );
+                
+            	echo "ada crossover";
             }
         
       //  return $newSol;
+    }
+
+   	// Mutate an individual
+    private static function mutate($indiv) {
+        // Loop through genes
+        for ($i=0; $i < $indiv->size(); $i++) {
+            if (  algorithm::random() <= algorithm::$mutationRate) {
+                $gene = individual::$characters[rand(0, strlen(individual::$characters) - 1)];    // Create random gene
+                //echo $gene;
+                $indiv->setGene($i, $gene); //substitute the gene into the individual
+            }
+        }
     }
 
 public function fitnessCalc($individu){
@@ -162,7 +184,7 @@ public function fitnessCalc($individu){
 
 		$fitness = $individu->setFitness($key,$fitness);
 
-		echo $index2.". Nilai Fitness Individu ".$key. ' = ' . $individu->getFitness($key);
+		echo $index2.". Nilai Fitness Individu ".$key. ' = ' . $individu->getFitness($key).' dengan nilai gen '.$individu->nilai_gen[$key].' dan slot waktu '.$individu->slot_waktu[$key];
 		echo "</br>";
 
 			}//end of foreach ($data_pc as $key)
@@ -279,6 +301,7 @@ public function seleksiE($individu){
 	echo "</br>";
 	//Ambil objek dari kelas Individu untuk mendapatkan total fitness yang tersimpan di objek individu
 	$jumlah_fitness = array_sum($individu->fitness);
+	$jumlah_nilai_gen = array_sum($individu->nilai_gen);
 	$max_fitness = max($individu->fitness);
 	echo "Fitness Maksimal = ". $max_fitness;
 	echo "</br>";
@@ -287,7 +310,7 @@ public function seleksiE($individu){
 	echo "Rata-rata fitness = ". $jumlah_fitness/count($individu->fitness);
 	echo "</br>";
 	//$nilai_gen = $individu->nilai_gen / 7;
-	echo "Rata-rata nilai_gen = ". array_sum($individu->nilai_gen);
+	echo "Rata-rata nilai_gen = ". array_sum($individu->nilai_gen)/count($individu->nilai_gen);
 	echo "</br>";
 
 	return $max_fitness;

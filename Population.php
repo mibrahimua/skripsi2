@@ -62,34 +62,17 @@ class Population extends Individu
 		echo "</br>";
 		var_dump($individu->slot_waktu[$indiv2]);
 		echo "</br>";
-		echo "CROSSOVER BERES !!!";
-		echo "</br>";
 		//================END OF CROSSOVER SECTION==============
 
+		//===================MUTATE SECTION======================
+		echo "<----------------------------------Mutasi------------------------------------------->"."<br>";
+		$this->mutate($individu);
+		echo "</br>";
 			echo "<----------------------------------Seleksi Elitism------------------------------------------->"."<br>";
 			$this->seleksiE($individu);
 			echo "debug individu terpilih dari populasi sebelumnya new_kode function setPopulasi";
 			var_dump($this->new_kode);
-			/*
-			$i = count($this->new_kode);
-			for (count($this->new_kode); count($this->new_kode) <= 12 ;) { 
-				
-				$this->setGenPc($this->new_kode);
-				
-			}
-			*/
-			/*
-			if(count($this->new_kode) <= 12){
-				echo "<----------------------------------Evolusi Lanjutan------------------------------------------->"."<br>";
-				$this->setGenPc($this->new_kode);
-				$this->fitnessCalc($this);
-				echo "<----------------------------------Seleksi Elitism------------------------------------------->"."<br>";
-				$this->seleksiE($this);
-				echo "<-------------------------------1 Putaran--------------------------------------->"."<br>"."<br>";
-
-			}
-			*/
-			//setelah melakukan seleksi dan memasukkan individu terbaik kedalam populasi baru, maka dilakukan pengecekan jumlah populasi. Jika jumlah populasi = 12 dilakukan crossover, jika jumlah populasi kurang dari 12 maka dilakukan pembuatan populasi ulang dengan mengecualikan individu yang sudah terpilih
+			
 	}
 public function loop(){
 	$this->fitnessCalc($this);
@@ -150,15 +133,24 @@ private static function poolSelection($pop) {
     }
 
    	// Mutate an individual
-    private static function mutate($indiv) {
+    private static function mutate($individu) {
         // Loop through genes
-        for ($i=0; $i < $indiv->size(); $i++) {
-            if (  Population::random() <= Population::$mutate_rate) {
-                $indiv->setGene($i, $gene); //substitute the gene into the individual
-                //$i merupakan index array
-                $indiv->setSlotWaktu($indiv2, $pop->slot_waktu[$indiv1] );
-            }
+       
+        $index = $individu->slot_waktu;
+        foreach ($index as $key => $value) {
+        	if (  Population::random() <= Population::$mutate_rate) {
+
+        		var_dump($key);
+        		
+        		echo "</br>";
+        		//rand(0, 11) adalah range dari slot waktu
+        		$randomId = rand(0, 11 );
+        		var_dump($randomId);
+        		echo "</br>";
+        		$individu->setSlotWaktu($key, $randomId);
+        	}
         }
+        
     }
 
 public function fitnessCalc($individu){

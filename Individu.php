@@ -31,10 +31,15 @@ class Individu
 	public $fitness;
 	
 
-	public function setGenPc()
+	public function setGenPc($array,$newPc = false)
 	{
 		$m_Data_Pc = new Data_Pc();
-		$data_pc = $m_Data_Pc->getPc();
+		if($newPc == false){
+			$data_pc = $m_Data_Pc->getPc();
+		}else{
+			$data_pc = $m_Data_Pc->getNewPc($array);
+		}
+		
 		$index = 0;
 
 		foreach ($data_pc as $key => $value) {
@@ -65,7 +70,7 @@ public function findDuplicates($array,$tipe)
 
 	// Duplicates
 	$duplicates = array_diff_assoc($array, $unique);
-
+	
 	// Unique values
 	$result = array_diff($unique, $duplicates);
 
@@ -97,7 +102,9 @@ public function findDuplicates($array,$tipe)
 	}
 
 }
+	public function setGenNewPc(){
 
+	}
 	public function setGen($kode_inventori,$nilai_gen,$slot_waktu) {
         $this->nilai_gen[$kode_inventori] = $nilai_gen;
         $this->slot_waktu[$kode_inventori] = $slot_waktu;

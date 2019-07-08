@@ -24,8 +24,7 @@ class MenuKalkulasiAlgoritma extends Individu
 //$this = new Individu();
 	
 	$populasi = new Population();
-	$populasi->setPopulasi();
-	//var_dump($data_pc->waktu);
-	//$data_pc->setGenWaktu();
-	//$populasi->getTotalFitness();
+	$populasi->setPopulasi(false);
+	$populasi->loop();
+
 ?>

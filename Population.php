@@ -29,11 +29,21 @@ class Population extends Individu
 	public static $crossover_rate = 0.5;
 	public static $mutate_rate = 0.2;
 	public static $poolSize = 12;
-
-	public function setPopulasi(){
+	public $putaran = 0;
+	public function setPopulasi($newPc = false){
 		echo "<----------------------------------Awal Evolusi------------------------------------------->"."<br>";
 		$individu = new Individu();
-		$individu->setGenPc();
+		if($newPc == false){
+			echo "here nothing";
+			$nothing = array();
+			$nothing = '';
+			$individu->setGenPc($nothing);
+		}else{
+			echo "here setGenPc";
+			$individu->setGenPc($this->nilai_gen,$newPc = true);
+		}
+		
+		
 		//var_dump($individu->size());
 		
 
@@ -41,8 +51,6 @@ class Population extends Individu
 		echo "Rata-rata nilai_gen semua pc = ";
 		print_r($rata);
 		echo "</br>";
-		$index_evo = 0;
-		//test
 			//end of Inisialisasi populasi awal
 			$this->fitnessCalc($individu);
 			$this->getTotalFitness($individu);
@@ -68,17 +76,26 @@ class Population extends Individu
 		echo "<----------------------------------Mutasi------------------------------------------->"."<br>";
 		$this->mutate($individu);
 		echo "</br>";
-			echo "<----------------------------------Seleksi Elitism------------------------------------------->"."<br>";
-			$this->seleksiE($individu);
-			echo "debug individu terpilih dari populasi sebelumnya new_kode function setPopulasi";
-			var_dump($this->new_kode);
+		//===================END OF MUTATE SECTION======================
+		echo "<----------------------------------Seleksi Elitism------------------------------------------->"."<br>";
+		$this->seleksiE($individu);
+		echo "</br>";
+		
+		
 			
-	}
+	}//END OF function setPopulasi
 public function loop(){
-	$this->fitnessCalc($this);
-	echo "<----------------------------------Seleksi Elitism------------------------------------------->"."<br>";
-	$this->seleksiE($this);
-	
+
+	while (count($this->nilai_gen) <= 11) {
+		$this->setPopulasi($this,true);
+	}
+
+	echo "Populasi Akhir ";
+	echo "</br>";
+	foreach ($this->nilai_gen as $key => $value) {
+		echo $key.' dengan nilai gen '.$this->nilai_gen[$key].' dan slot waktu '.$this->slot_waktu[$key];
+		echo "</br>";
+	}
 }
 
 private static function random() {
@@ -86,7 +103,6 @@ private static function random() {
 }
 
 public function evolve($pop){
-
 }
 
 private static function poolSelection($pop) {
@@ -155,7 +171,7 @@ private static function poolSelection($pop) {
 
 public function fitnessCalc($individu){
 	//Pencarian data ganda dan memberi nilai gen waktu dan gen pc
-		
+		$find = new Individu();
 		$nilai_waktu = $individu->findDuplicates($individu->slot_waktu,"waktu");
 		//$nilai_pc = $individu->findDuplicates($individu->kode_inventori,"pc");
 	
@@ -199,62 +215,25 @@ public function seleksiE($individu){
 
 	}
 	//end of Seleksi Menggunakan Elitism
-
-	//Memasukkan individu terbaik dari hasil seleksi Elitism kedalam populasi baru
+	//========Penyimpanan Individu terpilih kedalam populasi baru =============
 	$maks_keyfitness = array_keys($individu->fitness, max($individu->fitness));
 	print_r($maks_keyfitness);
 
-	echo "</br>";
-	echo "</br>";
 	$key = $maks_keyfitness[array_rand($maks_keyfitness, 1)];
-	$this->setNewGen($key,$individu->nilai_gen[$key],$individu->slot_waktu[$key]);
 	 echo "</br>";
-	
-	echo "Individu yang terpilih untuk di ikutkan di pembuatan populasi selanjutnya : ";
-	var_dump($this->new_nilai_gen);
-	echo "<br>";
-	echo "<br>";
-	echo "MEMBUAT RANDOM POPULASI BARU"."<br>";
-	
-	
-	//unset($individu);
-	//end of Memasukkan individu terbaik dari hasil seleksi Elitism kedalam populasi baru
-	//var_dump($individu->fitness);
-	if($this->getMeanFitness($individu) < $this->getTotalFitness($individu)){
-		
-		$this->setGenPc($this->new_kode);
-		echo "KURANG CROSSOVER"."<br>";
-		echo "KURANG MUTASI"."<br>";
-		echo "GANBATTE ONI-CHAN !!!"."<br>";
-		echo "<-------------------------------1 Putaran--------------------------------------->"."<br>"."<br>";
-		//$this->loop();
-		echo "<----------------------------------Evolusi Lanjutan------------------------------------------->"."<br>";
-	}else{
-		$mean = $this->getMeanFitness($individu);
-		$maks = $this->getTotalFitness($individu);
-		echo $mean." > ".$maks."<br>";
-		echo "entah lah bro lelah hahhaa";
-	}
-
+	//cek apakah sudah ada slot waktu di populasi terpilih
+	if(!in_array($individu->slot_waktu[$key], $this->slot_waktu)){
+		echo "Individu yang terpilih untuk di ikutkan di pembuatan populasi selanjutnya : ";
+	$this->saveIndividual($key,$individu->nilai_gen[$key],$individu->slot_waktu[$key]);
+	echo $key.' dengan nilai gen '.$this->nilai_gen[$key].' dan slot waktu '.$this->slot_waktu[$key];
 	echo "</br>";
-	echo "debug new_kode function seleksiE : ";
-	var_dump($this->new_kode);
-	echo "<br>";
-	echo "debug new_index function seleksiE : ";
-	var_dump($this->new_index);
-	echo "<br>";
-	/*
-	if(count($this->kode_inventori) != 12){
-		$array =  $this->kode_inventori;
-		
-		$this->setGenPc($this->kode_inventori);
 	}
-	*/
-//unset($this->kode_inventori);
+			
 
-	echo "debug populasi baru individu kode_inventori function seleksiE : ";
-	var_dump($this->kode_inventori);
-		echo "</br>";
+	$this->putaran++;
+	echo "Putaran Evolusi ke ";
+	var_dump($this->putaran);
+	echo "</br>";
 }
 	
 
@@ -263,31 +242,15 @@ public function seleksiE($individu){
 		return $this->new_nilai_gen[$index];
 	}
 	
-	public function setNewGen($kode_inventori,$nilai_gen,$slot_waktu)
+	public function saveIndividual($kode_inventori,$nilai_gen,$slot_waktu)
 	{
-		$this->new_nilai_gen[$kode_inventori] = $nilai_gen;
-		$this->new_slot_waktu[$kode_inventori] = $slot_waktu;
+		$this->nilai_gen[$kode_inventori] = $nilai_gen;
+		$this->slot_waktu[$kode_inventori] = $slot_waktu;
 	}
 
-	public function getNewWaktu($index)
-	{
-		return $this->new_waktu[$index];
-	}
+	
 
-	public function setNewWaktu($index,$value)
-	{
-		$this->new_waktu[$index] = $value;
-	}
 
-	public function getNewFitness($index,$value)
-	{
-		return $this->new_fitness[$index];
-	}
-
-	public function setNewFitness($index,$value)
-	{
-		$this->new_fitness[$index] = $value;
-	}
 	
 	public function getTotalFitness($individu){
 	echo "</br>";
@@ -326,18 +289,6 @@ var_dump($mean);
 	{
 		return $this->new_populasi[$index];
 	}
-	
-	
-
-
-
-
-
-	public function getPopulasi()
-	{
-	}
-
-	
 
 }
 ?>

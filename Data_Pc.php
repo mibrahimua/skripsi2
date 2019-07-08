@@ -106,7 +106,7 @@ class Data_Pc
 		$this->setPara($para3);
 		//var_dump($this->para);
 		$para = implode(" AND ", $this->para);
-		$query = "SELECT * FROM data_pc WHERE ".$para.$limit;
+		$query = "SELECT kode_inventori, (monitor_pc + mouse_pc + keyboard_pc + kipasproces_pc + hdd_pc + ram_pc + process_pc) AS nilai_gen FROM data_pc WHERE ".$para.$limit;
 		//var_dump($size_limit);
 		echo "debug query : ";
 		var_dump($query);

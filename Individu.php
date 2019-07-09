@@ -35,8 +35,11 @@ class Individu
 	{
 		$m_Data_Pc = new Data_Pc();
 		if($newPc == false){
+			echo "ini getPc"; echo '</br>';
 			$data_pc = $m_Data_Pc->getPc();
 		}else{
+			echo "ini getNewPc"; echo '</br>';
+			var_dump($array);
 			$data_pc = $m_Data_Pc->getNewPc($array);
 		}
 		
@@ -88,7 +91,7 @@ public function findDuplicates($array,$tipe)
 		}
 	//jika individu terdapat kesamaan maka nilai bobot = 0.5
 	foreach ($duplicate_keys as $key) {
-		$this->setNilaiWaktu($key,0.5);
+		$this->setNilaiWaktu($key,0);
 		}
 
 	}elseif($tipe == 'pc'){
@@ -98,7 +101,7 @@ public function findDuplicates($array,$tipe)
 		}
 	//jika individu terdapat kesamaan maka nilai bobot = 1
 	foreach ($duplicate_keys as $key) {
-		$this->setNilaiPc($key,1);
+		$this->setNilaiPc($key,0);
 		}	
 
 	}
@@ -171,6 +174,7 @@ public function findDuplicates($array,$tipe)
 	public function setFitness($index,$value){
 		$this->fitness[$index] = $value;
 	}
+
 
 	
 

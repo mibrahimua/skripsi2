@@ -15,10 +15,6 @@ require_once ('Individu.php');
 class Population extends Individu
 {
 	
-	function __construct(){
-		$this->index = -1;
-		$this->new_index = -1;
-	}
 	
 	//tentukan jumlah populasi
 	//individu dengan fitness terbaik 
@@ -26,8 +22,8 @@ class Population extends Individu
 	public $new_populasi;
 	public $m_Individu;
 	public $kode_inventori;
-	public static $crossover_rate = 0.5;
-	public static $mutate_rate = 0.2;
+	public static $crossover_rate = 0.9;
+	public static $mutate_rate = 0.1;
 	public static $poolSize = 12;
 	public $putaran = 0;
 	public function setPopulasi($newPc = false){
@@ -37,56 +33,30 @@ class Population extends Individu
 			echo "here nothing";
 			$nothing = array();
 			$nothing = '';
-			$individu->setGenPc($nothing);
+			$sol = $individu->setGenPc($nothing);
 		}else{
 			echo "here setGenPc";
-			$individu->setGenPc($this->nilai_gen,$newPc = true);
+			var_dump(count($this->nilai_gen));
+			$sol = $individu->setGenPc($this->nilai_gen,$newPc = true);
 		}
-		
-		
-		//var_dump($individu->size());
-		
 
-		$rata = $individu->getMeanAllPc();
-		echo "Rata-rata nilai_gen semua pc = ";
-		print_r($rata);
-		echo "</br>";
+		
+		
 			//end of Inisialisasi populasi awal
-			$this->fitnessCalc($individu);
-			$this->getTotalFitness($individu);
 
-		echo "<----------------------------------Crossover------------------------------------------->"."<br>";
-		//===================CROSSOVER SECTION==============
-		$indiv1 = $this->poolSelection($individu);
-		echo "</br>";
-		$indiv2 = $this->poolSelection($individu);
-		echo "</br>";
-		var_dump($individu->slot_waktu[$indiv1]);
-		echo "</br>";
-		var_dump($individu->slot_waktu[$indiv2]);
-		echo "</br>";
-		$this->crossover($individu,$indiv1,$indiv2);
-		echo "</br>";
-		var_dump($individu->slot_waktu[$indiv1]);
-		echo "</br>";
-		var_dump($individu->slot_waktu[$indiv2]);
-		echo "</br>";
-		//================END OF CROSSOVER SECTION==============
-
-		//===================MUTATE SECTION======================
-		echo "<----------------------------------Mutasi------------------------------------------->"."<br>";
-		$this->mutate($individu);
-		echo "</br>";
 		
-		//===================END OF MUTATE SECTION======================
+/*
 		echo "<----------------------------------Seleksi Elitism------------------------------------------->"."<br>";
 		$this->seleksiE($individu);
 		echo "</br>";
+*/		
 		
-		
-			
+			/*
+			SOOOOO KETIKA SUDAH TERPILIH INDIVIDUNYA DIMASUKKAN KEDALAM GENERASI BARU BROO JANGAN DIPISAHKAN SENDIRI
+			*/
 	}//END OF function setPopulasi
 public function loop(){
+//FUCKING THIS SHI**t
 
 	while (count($this->nilai_gen) <= 11) {
 		$this->setPopulasi($this,true);
@@ -100,12 +70,12 @@ public function loop(){
 	}
 }
 
-private static function random() {
+public static function random() {
   return (float)rand()/(float)getrandmax();  /* return number from 0 .. 1 as a decimal */
 }
 
 
-private static function poolSelection($pop) {
+public static function poolSelection($pop) {
         // Create a pool population
 	
 	   for ($i=0; $i < Population::$poolSize; $i++) {
@@ -123,13 +93,13 @@ private static function poolSelection($pop) {
     }
 
 	// Crossover individuals (aka reproduction)
-    private static function  crossover($pop,$indiv1, $indiv2) 
+    public static function  crossover($pop,$indiv1, $indiv2) 
 	 {
        $newSol = new Individu();  //create a offspring
         // Loop through genes
        
             // Crossover at which point 0..1 , .50 50% of time
-            if (  Population::random() < Population::$crossover_rate)
+            if (  Population::random() > Population::$crossover_rate)
 			{
 
 				//$waktu = array_keys($indiv1->slot_waktu);
@@ -149,7 +119,7 @@ private static function poolSelection($pop) {
     }
 
    	// Mutate an individual
-    private static function mutate($individu) {
+    public static function mutate($individu) {
         // Loop through genes
        
         $index = $individu->slot_waktu;
@@ -174,7 +144,7 @@ public function fitnessCalc($individu){
 		$find = new Individu();
 		$nilai_waktu = $individu->findDuplicates($individu->slot_waktu,"waktu");
 		//$nilai_pc = $individu->findDuplicates($individu->kode_inventori,"pc");
-	
+		
 		$data_pc = $individu->nilai_gen;
 
 		//Inisialisasi populasi awal
@@ -185,10 +155,11 @@ public function fitnessCalc($individu){
 		//$nilai_pc = $individu->getNilaiPc($index2);
 		$nilai_waktu = $individu->getNilaiWaktu($key);
 		//$nilai_bobot = $nilai_pc+$nilai_waktu;
+
 		$nilai_bobot = $nilai_waktu;
 		$nilai_gen = $value;
 
-		$fitness = 1/1+($nilai_gen-$nilai_bobot);//Rumus fitness : F(x) = 1/1+(nilai_gen+bobot)
+		$fitness = 1/$nilai_gen*$nilai_bobot;//Rumus fitness : F(x) = 1/1+(nilai_gen+bobot)
 
 		$fitness = $individu->setFitness($key,$fitness);
 
@@ -207,8 +178,8 @@ public function seleksiE($individu){
 	$maks_fitness = max($individu->fitness);
 	foreach ($data_pc as $key => $value) {
 	
-	$presentasi = round(($individu->getFitness($key)/$maks_fitness)*100,2);
-	echo " Presentasi Seleksi Individu ".$key .' dengan Fitness ' . $individu->getFitness($key). " = " . $presentasi.' % dengan nilai gen '.$individu->nilai_gen[$key].' dan slot waktu '.$individu->slot_waktu[$key];
+	//$presentasi = round(($individu->getFitness($key)/$maks_fitness)*100,2);
+	echo " Presentasi Seleksi Individu ".$key .' dengan Fitness ' . $individu->getFitness($key).' % dengan nilai gen '.$individu->nilai_gen[$key].' dan slot waktu '.$individu->slot_waktu[$key];
 	echo "</br>";
 
 
@@ -217,7 +188,8 @@ public function seleksiE($individu){
 	//end of Seleksi Menggunakan Elitism
 	//========Penyimpanan Individu terpilih kedalam populasi baru =============
 	$maks_keyfitness = array_keys($individu->fitness, max($individu->fitness));
-	print_r($maks_keyfitness);
+	 echo "</br>";
+	echo "Individu dengan fitness terbaik ";print_r($maks_keyfitness);
 
 	$key = $maks_keyfitness[array_rand($maks_keyfitness, 1)];
 	 echo "</br>";

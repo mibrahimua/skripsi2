@@ -95,9 +95,9 @@ class Data_Pc
 		//$size_limit = 12;
 		$order_rand = " ORDER BY RAND() ";	
 		//$limit = $order_rand."LIMIT ".$size_limit;
-		$limit = $order_rand."LIMIT 12";
+		$limit = $order_rand."LIMIT ".$size_limit;
 		$not_like = "kode_inventori != ";
-		foreach ($array as $key) {
+		foreach ($array as $key => $value) {
 			$a = $not_like."'$key'";
 			//var_dump($a);
 			$para2 = array_push($para3,$a) ;

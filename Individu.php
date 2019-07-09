@@ -45,8 +45,10 @@ class Individu
 		foreach ($data_pc as $key => $value) {
 		
 		 $nilai_gen = $value['nilai_gen'];
-		 $nilai_gen = sqrt(pow(($nilai_gen),2)/count($m_Data_Pc->getPc()));
+		 $nilai_gen = sqrt(pow(($nilai_gen),2)/$m_Data_Pc->getRow());
 
+		 //sqrt fungsi membuat akar dari
+		 //pow fungsi membuat pangkat, pow(bilangan, tingkatan pangkat)
 		 $kode_inventori = $value['kode_inventori'];
 		 $index2 = $index++;
 		  $slot_waktu = $m_Data_Pc->slot_waktu();

@@ -54,6 +54,7 @@ class Population extends Individu
 			//end of Inisialisasi populasi awal
 			$this->fitnessCalc($individu);
 			$this->getTotalFitness($individu);
+
 		echo "<----------------------------------Crossover------------------------------------------->"."<br>";
 		//===================CROSSOVER SECTION==============
 		$indiv1 = $this->poolSelection($individu);
@@ -76,6 +77,7 @@ class Population extends Individu
 		echo "<----------------------------------Mutasi------------------------------------------->"."<br>";
 		$this->mutate($individu);
 		echo "</br>";
+		
 		//===================END OF MUTATE SECTION======================
 		echo "<----------------------------------Seleksi Elitism------------------------------------------->"."<br>";
 		$this->seleksiE($individu);
@@ -102,8 +104,6 @@ private static function random() {
   return (float)rand()/(float)getrandmax();  /* return number from 0 .. 1 as a decimal */
 }
 
-public function evolve($pop){
-}
 
 private static function poolSelection($pop) {
         // Create a pool population

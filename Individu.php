@@ -35,12 +35,9 @@ class Individu
 	{
 		$m_Data_Pc = new Data_Pc();
 		if($newPc == false){
-			echo "ini getPc"; echo '</br>';
 			$data_pc = $m_Data_Pc->getPc();
 		}else{
-			echo "ini getNewPc"; echo '</br>';
-			var_dump($array);
-			$data_pc = $m_Data_Pc->getNewPc($array);
+ 			$data_pc = $m_Data_Pc->getNewPc($array);
 		}
 		
 		$index = 0;
@@ -173,6 +170,13 @@ public function findDuplicates($array,$tipe)
 
 	public function setFitness($index,$value){
 		$this->fitness[$index] = $value;
+	}
+
+	public function hapusIndividu($pop,$index)
+	{
+		unset($pop->fitness[$index]);
+		unset($pop->nilai_gen[$index]);
+		unset($pop->slot_waktu[$index]);
 	}
 
 

@@ -171,36 +171,23 @@ public function fitnessCalc($individu){
 }
 public function seleksiE($individu){
 
-	//Seleksi Menggunakan Elitism
-	//$individu = $individu;
-//var_dump($this->kode_inventori);
-	$data_pc = $individu->fitness;
-	$maks_fitness = max($individu->fitness);
-	foreach ($data_pc as $key => $value) {
 	
-	//$presentasi = round(($individu->getFitness($key)/$maks_fitness)*100,2);
-	echo " Presentasi Seleksi Individu ".$key .' dengan Fitness ' . $individu->getFitness($key).' % dengan nilai gen '.$individu->nilai_gen[$key].' dan slot waktu '.$individu->slot_waktu[$key];
-	echo "</br>";
-
-
-
-	}
-	//end of Seleksi Menggunakan Elitism
 	//========Penyimpanan Individu terpilih kedalam populasi baru =============
-	$maks_keyfitness = array_keys($individu->fitness, max($individu->fitness));
-	 echo "</br>";
-	echo "Individu dengan fitness terbaik ";print_r($maks_keyfitness);
-
+	$this->newFitness = $individu->fitness;
+	$this->newNilai_gen = $individu->nilai_gen;
+	$this->newSlot_waktu = $individu->slot_waktu;
+	$maks_keyfitness = array_keys($this->newFitness, min($this->newFitness));
 	$key = $maks_keyfitness[array_rand($maks_keyfitness, 1)];
-	 echo "</br>";
-	//cek apakah sudah ada slot waktu di populasi terpilih
-	if(!in_array($individu->slot_waktu[$key], $this->slot_waktu)){
-		echo "Individu yang terpilih untuk di ikutkan di pembuatan populasi selanjutnya : ";
-	$this->saveIndividual($key,$individu->nilai_gen[$key],$individu->slot_waktu[$key]);
-	echo $key.' dengan nilai gen '.$this->nilai_gen[$key].' dan slot waktu '.$this->slot_waktu[$key];
-	echo "</br>";
-	}
-			
+	$parent1 = $key;
+	
+	$this->saveIndividual($parent1,$this->newNilai_gen[$parent1],$this->newSlot_waktu[$parent1]);
+	unset($this->newFitness[$parent1]);
+	unset($this->newNilai_gen[$parent1]);
+	unset($this->newSlot_waktu[$parent1]);
+	$maks_keyfitness = array_keys($this->newFitness, min($this->newFitness));
+	$key = $maks_keyfitness[array_rand($maks_keyfitness, 1)];
+	$parent2 = $key;
+	$this->saveIndividual($parent2,$this->newNilai_gen[$parent2],$this->newSlot_waktu[$parent2]);
 
 	$this->putaran++;
 	echo "Putaran Evolusi ke ";
@@ -216,8 +203,8 @@ public function seleksiE($individu){
 	
 	public function saveIndividual($kode_inventori,$nilai_gen,$slot_waktu)
 	{
-		$this->nilai_gen[$kode_inventori] = $nilai_gen;
-		$this->slot_waktu[$kode_inventori] = $slot_waktu;
+		$this->datanilai_gen[$kode_inventori] = $nilai_gen;
+		$this->dataslot_waktu[$kode_inventori] = $slot_waktu;
 	}
 
 	

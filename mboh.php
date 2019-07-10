@@ -19,24 +19,12 @@ class MenuKalkulasiAlgoritma extends Population
 	$populasi = new Population();
 	$populasi->setGenPc($nothing);
 	$populasi->fitnessCalc($populasi);
-	$data_nol = count(array_keys($populasi->fitness,0));
-	if($data_nol > 0)
+	$data_satu = count(array_keys($populasi->fitness,1));
+	if($data_satu != 12)
 	{
 			$populasi->seleksiE($populasi);
-			$min_keyfitness = array_keys($populasi->newFitness, min($populasi->newFitness));
-			$key = $min_keyfitness[array_rand($min_keyfitness, 1)];
-			$populasi->hapusIndividu($populasi,$key);
-			$key = $min_keyfitness[array_rand($min_keyfitness, 1)];
-			$populasi->hapusIndividu($populasi,$key);
-			foreach ($populasi->datanilai_gen as $key => $value) {
-				$populasi->setGen($key,$populasi->datanilai_gen[$key],$populasi->dataslot_waktu[$key]);
-				var_dump($populasi->nilai_gen);
-			}
 			
-			
-
-			
-			
+			var_dump($populasi->nilai_gen);
 	}
 /*
 		echo "<----------------------------------fitness Calculation------------------------------------------->"."<br>";

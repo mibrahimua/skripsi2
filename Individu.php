@@ -84,21 +84,21 @@ public function findDuplicates($array,$tipe)
 	if($tipe == "waktu"){
 	//jika individu unik maka nilai bobot = 0.2
 	foreach ($unique_keys as $key) {
-	$this->setNilaiWaktu($key,0.2);
+	$this->setNilaiWaktu($key,0);
 		}
 	//jika individu terdapat kesamaan maka nilai bobot = 0.5
 	foreach ($duplicate_keys as $key) {
-		$this->setNilaiWaktu($key,0);
+		$this->setNilaiWaktu($key,1);
 		}
 
 	}elseif($tipe == 'pc'){
 	//jika individu unik maka nilai bobot = 0.2
 	foreach ($unique_keys as $key) {
-	$this->setNilaiPc($key,0.2);
+	$this->setNilaiPc($key,0);
 		}
 	//jika individu terdapat kesamaan maka nilai bobot = 1
 	foreach ($duplicate_keys as $key) {
-		$this->setNilaiPc($key,0);
+		$this->setNilaiPc($key,1);
 		}	
 
 	}

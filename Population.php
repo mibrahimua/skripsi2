@@ -159,7 +159,7 @@ public function fitnessCalc($individu){
 		$nilai_bobot = $nilai_waktu;
 		$nilai_gen = $value;
 
-		$fitness = 1/$nilai_gen*$nilai_bobot;//Rumus fitness : F(x) = 1/1+(nilai_gen+bobot)
+		$fitness = 1/1+($nilai_bobot*$nilai_gen);//Rumus fitness : F(x) = 1/1+(nilai_gen+bobot)
 
 		$fitness = $individu->setFitness($key,$fitness);
 
@@ -173,22 +173,38 @@ public function seleksiE($individu){
 
 	
 	//========Penyimpanan Individu terpilih kedalam populasi baru =============
+	//salin populasi kromosom lama ke populasi baru
 	$this->newFitness = $individu->fitness;
 	$this->newNilai_gen = $individu->nilai_gen;
 	$this->newSlot_waktu = $individu->slot_waktu;
+	//hapus 2 kromosom dari populasi lama untuk menyediakan slot populasi
+	$max_keyfitness = array_keys($this->fitness, max($this->fitness));
+	$key = $max_keyfitness[array_rand($max_keyfitness, 1)];
+	echo "hapus individu ".$key;echo '</br>';
+	$individu->hapusIndividu($individu,$key);
+
+	$max_keyfitness = array_keys($this->fitness, max($this->fitness));
+	$key = $max_keyfitness[array_rand($max_keyfitness, 1)];
+	echo "hapus individu ".$key;echo '</br>';
+	$individu->hapusIndividu($individu,$key);
+
 	$maks_keyfitness = array_keys($this->newFitness, min($this->newFitness));
 	$key = $maks_keyfitness[array_rand($maks_keyfitness, 1)];
 	$parent1 = $key;
-	
-	$this->saveIndividual($parent1,$this->newNilai_gen[$parent1],$this->newSlot_waktu[$parent1]);
+	echo "parent 1 = ".$parent1;echo '</br>';
+	$individu->saveIndividual($parent1,$this->newNilai_gen[$parent1],$this->newSlot_waktu[$parent1]);
+
 	unset($this->newFitness[$parent1]);
 	unset($this->newNilai_gen[$parent1]);
 	unset($this->newSlot_waktu[$parent1]);
 	$maks_keyfitness = array_keys($this->newFitness, min($this->newFitness));
 	$key = $maks_keyfitness[array_rand($maks_keyfitness, 1)];
 	$parent2 = $key;
-	$this->saveIndividual($parent2,$this->newNilai_gen[$parent2],$this->newSlot_waktu[$parent2]);
+	echo "parent 2 = ".$parent2;echo '</br>';
+	$individu->saveIndividual($parent2,$this->newNilai_gen[$parent2],$this->newSlot_waktu[$parent2]);
 
+	var_dump($this->nilai_gen);echo '</br>';
+//gagal menambahkan object dengan key yang sama didalam array, karena sudah ada key tersebut
 	$this->putaran++;
 	echo "Putaran Evolusi ke ";
 	var_dump($this->putaran);
@@ -203,8 +219,8 @@ public function seleksiE($individu){
 	
 	public function saveIndividual($kode_inventori,$nilai_gen,$slot_waktu)
 	{
-		$this->datanilai_gen[$kode_inventori] = $nilai_gen;
-		$this->dataslot_waktu[$kode_inventori] = $slot_waktu;
+		$this->nilai_gen[$kode_inventori] = $nilai_gen;
+		$this->slot_waktu[$kode_inventori] = $slot_waktu;
 	}
 
 	

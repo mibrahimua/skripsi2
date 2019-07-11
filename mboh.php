@@ -10,7 +10,8 @@ require_once ('Population.php');
 class MenuKalkulasiAlgoritma extends Population
 {
 
-	
+	//aplikasi ini tidak berjalan karena perumusan fitness yang salah yakni dihitung bersama dengan nilai slot waktu, seharusnya yang dimasukkan ke rumus fitness adalah nilai gen pc. dan saat initial populasi gen slot waktu jangan di acak, jadi tetapkan semua slot waktu dalam slot populasi yang tersedia. sehingga yang diacak hanya gen pc. jadi nilai fitnessnya akan terus naik tiap kali evolusi krn yang dicari nilai fitness terbaik (nilai gen pc terbaik).
+
 }
 
 	$maks_iterasi = 1000;

@@ -45,7 +45,7 @@ class Individu
 		foreach ($data_pc as $key => $value) {
 		
 		 $nilai_gen = $value['nilai_gen'];
-		 $nilai_gen = sqrt(pow(($nilai_gen),2)/$m_Data_Pc->getRow());
+		 //$nilai_gen = sqrt(pow(($nilai_gen),2)/$m_Data_Pc->getRow());
 
 		 //sqrt fungsi membuat akar dari
 		 //pow fungsi membuat pangkat, pow(bilangan, tingkatan pangkat)
@@ -94,11 +94,11 @@ public function findDuplicates($array,$tipe)
 	}elseif($tipe == 'pc'){
 	//jika individu unik maka nilai bobot = 0.2
 	foreach ($unique_keys as $key) {
-	$this->setNilaiPc($key,0);
+	$this->setNilaiPc($key,1);
 		}
 	//jika individu terdapat kesamaan maka nilai bobot = 1
 	foreach ($duplicate_keys as $key) {
-		$this->setNilaiPc($key,1);
+		$this->setNilaiPc($key,0);
 		}	
 
 	}
@@ -108,6 +108,7 @@ public function findDuplicates($array,$tipe)
 
 	}
 	public function setGen($kode_inventori,$nilai_gen,$slot_waktu) {
+		$this->kode_inventori[$kode_inventori] = $kode_inventori;
         $this->nilai_gen[$kode_inventori] = $nilai_gen;
         $this->slot_waktu[$kode_inventori] = $slot_waktu;
     }
@@ -139,6 +140,15 @@ public function findDuplicates($array,$tipe)
 		$this->slot_waktu[$index] = $value;
 	}
 
+	public function getNilaiPc($index)
+	{
+		return $this->nilai_pc[$index];
+	}
+
+	public function setNilaiPc($index,$value)
+	{
+		$this->nilai_pc[$index] = $value;
+	}
 
 	public function getNilaiWaktu($index)
 	{

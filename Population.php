@@ -142,8 +142,8 @@ public static function poolSelection($pop) {
 public function fitnessCalc($individu){
 	//Pencarian data ganda dan memberi nilai gen waktu dan gen pc
 		$find = new Individu();
-		$nilai_waktu = $individu->findDuplicates($individu->slot_waktu,"waktu");
-		//$nilai_pc = $individu->findDuplicates($individu->kode_inventori,"pc");
+		//$nilai_waktu = $individu->findDuplicates($individu->slot_waktu,"waktu");
+		$nilai_pc = $individu->findDuplicates($individu->kode_inventori,"pc");
 		
 		$data_pc = $individu->nilai_gen;
 
@@ -151,17 +151,17 @@ public function fitnessCalc($individu){
 		$index_gen = 0;
 		foreach ($data_pc as $key => $value) {
 		$index2 = $index_gen++;
-		
-		//$nilai_pc = $individu->getNilaiPc($index2);
-		$nilai_waktu = $individu->getNilaiWaktu($key);
+
+		$nilai_pc = $individu->getNilaiPc($key);
+		//$nilai_waktu = $individu->getNilaiWaktu($key);
 		//$nilai_bobot = $nilai_pc+$nilai_waktu;
 
-		$nilai_bobot = $nilai_waktu;
+		$nilai_bobot = $nilai_pc;
 		$nilai_gen = $value;
 
 		$fitness = 1/1+($nilai_bobot*$nilai_gen);//Rumus fitness : F(x) = 1/1+(nilai_gen+bobot)
-
-		$fitness = $individu->setFitness($key,$fitness);
+var_dump($nilai_bobot);
+		$fitness = $individu->setFitness($key,$nilai_gen);
 
 		echo $index2.". Nilai Fitness Individu ".$key. ' = ' . $individu->getFitness($key).' dengan nilai gen '.$individu->nilai_gen[$key].' dan slot waktu '.$individu->slot_waktu[$key];
 		echo "</br>";

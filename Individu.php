@@ -15,14 +15,7 @@ require_once ('Data_Pc.php');
 class Individu
 {
  //tujuanmu membuat penjadwalan ini apa?
-	/*
-	apa solusi yang ingin kamu buat?
-	didalam ini terdapat berbagai data kondisi komputer
-	yang menjadi masalah ialah aku belum menemukan solusi yang ingin digunakan dalam penerapan algoritma ini
-	solusi yang ingin dicapai ialah nilai rata-rata nilai_gen dari populasi yang dihasilkan lebih besar dari rata-rata nilai_gen dari semua individu
-	lakukan query getallmean lalu lakukan perhitungan rata-rata nilai gen, kemudian ambil rata-rata nilai gen dari populasi yang dibuat
-	jika nilai rata-rata populasi yang dibuat lebih kecil maka lakukan pembuatan populasi ulang
-	*/
+	
 	//public $m_Data_Pc;
 	public $m_Population;
 	public $m_MenuKalkulasiAlgoritma;
@@ -42,26 +35,24 @@ class Individu
 		
 		$index = 0;
 
-		foreach ($data_pc as $key => $value) {
-		
-		 $nilai_gen = $value['nilai_gen'];
-		 //$nilai_gen = sqrt(pow(($nilai_gen),2)/$m_Data_Pc->getRow());
-
-		 //sqrt fungsi membuat akar dari
-		 //pow fungsi membuat pangkat, pow(bilangan, tingkatan pangkat)
-		 $kode_inventori = $value['kode_inventori'];
-		 $index2 = $index++;
-		  $slot_waktu = $m_Data_Pc->slot_waktu();
+		$slot_waktu = $m_Data_Pc->slot_waktu();
 
 		  foreach ($slot_waktu as $key => $value) {
-			$value['id_slot'];
+			$slot_waktu = $value['id_slot'];
+			$this->setSlotWaktu($value['id_slot'],$value['id_slot']);
 		  }
-		  $slot_waktu = $value['id_slot'];
+		  foreach ($data_pc as $key => $value) {
+		  	$this->setGen($value['kode_inventori'],$value['nilai_gen']);
+		  }
 
-		 $this->setGen($kode_inventori,$nilai_gen,$slot_waktu);
+		 foreach ($this->kromosom as $key => $value) {
+		 //	var_dump($value);
+		 	
+		 	 $this->setKromosom($key,$this->kode_inventori,$this->nilai_gen);
+		 }
+		var_dump($this->kromosom);
 
-}
-
+			
  			}//end of function setGenPc()
 
 	
@@ -104,13 +95,12 @@ public function findDuplicates($array,$tipe)
 	}
 
 }
-	public function setGenNewPc(){
-
+	public function setKromosom($slot_waktu,$kode_inventori,$nilai_gen){
+		$this->kromosom = $slot_waktu;
 	}
-	public function setGen($kode_inventori,$nilai_gen,$slot_waktu) {
-		$this->kode_inventori[$kode_inventori] = $kode_inventori;
-        $this->nilai_gen[$kode_inventori] = $nilai_gen;
-        $this->slot_waktu[$kode_inventori] = $slot_waktu;
+	public function setGen($kode_inventori,$nilai_gen) {
+		$this->kode_inventori = $kode_inventori;
+        $this->nilai_gen = $nilai_gen;
     }
 
     public function getGen($index) {
@@ -132,12 +122,12 @@ public function findDuplicates($array,$tipe)
 	return count($this->nilai_gen);
 }
 	public function getSlotWaktu($index){
-		return $this->slot_waktu[$index];
+		return $this->kromosom[$index];
 	}
 
 	public function setSlotWaktu($index,$value)
 	{
-		$this->slot_waktu[$index] = $value;
+		$this->kromosom[$index] = $value;
 	}
 
 	public function getNilaiPc($index)
@@ -160,22 +150,7 @@ public function findDuplicates($array,$tipe)
 	}
 	public function getFitness($index){
 		return $this->fitness[$index];
-			/*
-		//Batasan masalah 
-		//Tidak boleh ada komputer yang sama didalam jadwal dengan nilai bobot = 0.2
-		//Tidak boleh ada slot_waktu yang sama didalam jadwal dengan nilai bobot = 0.2
-		//Jika tidak sesuai mempunyai nilai bobot = 1
-		//Rumus fitness : F(x) = 1/1+(nilai_gen+bobot)
-		//permasalahan utama ialah cara mencari nilai bobot dari suatu kromosom / individu
-		//dikatakan bahwa tidak boleh ada komputer yang sama dalam
-		jadwal yang sama berarti didalam jadwal harus dibatasi
-		dan tidak boleh ada slot_waktu yang sama didalam 1 jadwal pemeliharaan, berarti dalam 1 jadwal dibatasi sebanyak 12 slot_waktu dengan durasi pemeliharaan 2 kali dalam sehari (senin s/d sabtu).
-		
-		Sekarang tinggal mencari pseudo codenya
-		- buat populasi sebanyak 12 kromosom dengan slot_waktu masing2
-		- hitung bobot dari masing-masing individu dengan membandingkan jumlah slot_waktu, jika tidak ada slot_waktu yang sama didalam populasi beri nilai = 0.2 , jika terdapat persamaan dalam slot_waktu didalam populasi beri nilai = 1.
-		setelah masing-masing individu mendapatkan nilai bobotnya, hitung menggunakan rumus fitness di masing-masing individu
-		*/ 
+			
 	}
 
 	public function setFitness($index,$value){

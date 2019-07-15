@@ -41,7 +41,7 @@ class Data_Pc
 	public function getPc()
 	{
 		$order_rand = "ORDER BY RAND() ";
-		$limit = "LIMIT 12";
+		$limit = "LIMIT 1";
 		$query = "SELECT kode_inventori, (monitor_pc + mouse_pc + keyboard_pc + kipasproces_pc + hdd_pc + ram_pc + process_pc) AS nilai_gen FROM data_pc ".$order_rand.$limit;
 
 		
@@ -126,7 +126,7 @@ class Data_Pc
 	}
 
 	public function slot_waktu(){
-	$query = "SELECT id_slot FROM slot_waktu ORDER BY RAND() LIMIT 1";
+	$query = "SELECT id_slot FROM slot_waktu ORDER BY id_slot ASC";
 	$data = $this->connect -> query($query);
 
 	$row = mysqli_num_rows($data);

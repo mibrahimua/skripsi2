@@ -38,9 +38,9 @@ public function getPc($index){
 
 		for ($i=0; $i < $row; $i++) { 
 			$d = mysqli_fetch_array($data);
-			$this->setKodeInventori($index,$d['id_pc']);
-		   $this->setKromosom($index,$d['id_pc'],$d['nilai_gen']);
+			$hasil[]=$d;
 	}
+	return $hasil;
 }
 
 public function getWaktu(){

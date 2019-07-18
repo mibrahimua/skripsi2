@@ -4,7 +4,7 @@
 /
 /************************************************************************/
 
-require_once('individu.php');  //supporting class file
+require_once('individual.php');  //supporting class file
 
  class fitnesscalc {
 
@@ -15,10 +15,9 @@ require_once('individu.php');  //supporting class file
 	// low fitness values are better,0=goal fitness is really a cost function in this instance
     static function  getFitness($individual) {
        $fitness = 0;
-	       
         for ($i=0; $i < $individual->size(); $i++) {
-        $nilai_fitness = $individual->nilai_gen[$i]/7;
-        if($nilai_fitness < 2.5){
+        $nilai_pc = $individual->nilai_gen[$i]/7;
+        if($nilai_pc < 2){
             //beri nilai 0
             $fitness++;
         }

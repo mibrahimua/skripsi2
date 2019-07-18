@@ -5,7 +5,7 @@ class database{
 	public static $poolSize = 12;
 	public $putaran = 0;
 	public static $maxGeneration = 5000;
-public function __construct()
+ function __construct()
     {
     	  $dbhost = "localhost";
     $dbuser = "root";
@@ -31,8 +31,21 @@ public static function random() {
   return (float)rand()/(float)getrandmax();  /* return number from 0 .. 1 as a decimal */
 }    
 
-public function getPc($index){
+public function getPc(){
 	$query = "SELECT id_pc, (monitor_pc + mouse_pc + keyboard_pc + kipasproces_pc + hdd_pc + ram_pc + process_pc) AS nilai_gen FROM data_pc ORDER BY RAND() LIMIT 1";
+	$data = $this->connect -> query($query);
+		$row = mysqli_num_rows($data);
+
+		for ($i=0; $i < $row; $i++) { 
+			$d = mysqli_fetch_array($data);
+			$hasil[]=$d;
+	}
+	return $hasil;
+}
+
+public function getMutatePc(){
+	$randomId = rand(1, 30);
+	$query = "SELECT id_pc, (monitor_pc + mouse_pc + keyboard_pc + kipasproces_pc + hdd_pc + ram_pc + process_pc) AS nilai_gen FROM data_pc WHERE id_pc = $randomId ";
 	$data = $this->connect -> query($query);
 		$row = mysqli_num_rows($data);
 
@@ -63,53 +76,6 @@ public function getMeanAll(){
 			$d = mysqli_fetch_array($data);
 		   $this->setMean($d['id_pc'],$d['nilai_gen']);
 	}
-}
-
-public function getGenPc($kode_inventori){
-	return $this->gen_pc[$kode_inventori];
-}
-public function setGenPc($kode_inventori,$nilai_gen){
-	$this->gen_pc = $kode_inventori.'|'.$nilai_gen;
-}
-
-public function setKodeInventori($index,$kode_inventori){
-	$this->kode_inventori[$index] = $kode_inventori;
-}
-
-public function getNilaiGenPc($kode_inventori){
-	return $this->NilaiGenPc[$kode_inventori];
-}
-public function setNilaiGenPc($kode_inventori,$nilai_gen){
-	$this->NilaiGenPc[$kode_inventori] = $nilai_gen;
-}
-
-public function getMean($kode_inventori){
-	return $this->mean_all[$kode_inventori];
-}
-public function setMean($kode_inventori,$nilai_gen){
-	$this->mean_all[$kode_inventori] = $nilai_gen;
-}
-
-public function getSlotWaktu($slot_waktu){
-	return $this->slot_waktu[$slot_waktu];
-}
-public function setSlotWaktu($slot_waktu,$slot_waktu){
-	$this->slot_waktu[$slot_waktu] = $slot_waktu;
-}
-
-public function getKromosom($slot_waktu){
-	return $this->kromosom[$slot_waktu];
-}
-public function setKromosom($slot_waktu,$kode_inventori,$nilai_gen){
-	$this->kromosom[$slot_waktu] = $kode_inventori.'|'.$nilai_gen;
-}
-
-public function setFitness($index,$value){
-		$this->fitness[$index] = $value;
-}
-
-public function saveIndividu($slot_waktu,$kode_inventori,$nilai_gen){
-	$this->new_kromosom[$slot_waktu] = $kode_inventori.'|'.$nilai_gen;
 }
 
 
@@ -220,7 +186,7 @@ public static function mutasi($pop) {
 }
 
 }//end of clas database
-
+/*
 $data = new database();
 
 $data->getWaktu();
@@ -251,10 +217,7 @@ $data->crossover($data,$indiv1,$indiv2);
 //melakukan mutasi
 $data->mutasi($data);
 for ($i=1; $i  < $data->size() ; $i++) { 
-if($){
 
-	}
-}
 $data->fitnessCalc($data);
 for ($i=1; $i  < $data->size() ; $i++) { 
 	echo $i.'. '.$data->kromosom[$i] .' = '. $data->fitness[$i].' nilai_gen = '.$data->NilaiGenPc[$i];echo '</br>';
@@ -271,5 +234,5 @@ $data->putaran++;
 for ($i=1; $i  < $data->size() ; $i++) { 
 	echo $i.'. '.$data->kromosom[$i] .' = '. $data->fitness[$i].' nilai_gen = '.$data->NilaiGenPc[$i];echo '</br>';
 }
-
+*/
 ?>

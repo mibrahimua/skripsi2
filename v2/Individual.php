@@ -1,19 +1,16 @@
 <?php
 
 
-require_once ('Data_Pc.php');
-//require_once ('Population.php');
-
-
-
+require_once('database.php');
 
 /**
  * @author M Ibrahim U Albab
  * @version 1.0
  * @created 03-Jun-2019 11:19:30 PM
  */
-class Individu
+class Individu extends Database
 {
+	
 	
 	public $id_pc;
 	public $nilai_gen;
@@ -29,6 +26,7 @@ class Individu
         	foreach ($indiv as $key => $value) {
         	 	$this->id_pc[$i] = $value['id_pc'];
         	 	$this->nilai_gen[$i] = $value['nilai_gen'];
+
         		 } 
 			
             }
@@ -58,7 +56,14 @@ class Individu
         return $this->fitness;
     }	
 	
-
+public function __toString() {
+        $geneString = null;
+        for ($i = 0; $i <  count($this->id_pc); $i++) {
+            $geneString .= $this->getIdPc($i);
+        }
+        
+        return $geneString;
+    }
 
 }
 ?>

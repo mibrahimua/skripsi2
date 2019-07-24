@@ -32,8 +32,9 @@ public static function random() {
 }    
 
 public function getPc(){
-	$query = "SELECT p.id_pc,p.tgl_terakhir,(SELECT s.weekday FROM slot_waktu s ORDER BY RAND() LIMIT 1 ) AS weekday,p.id_dept,(SELECT d.id_dept FROM department d ORDER BY RAND() LIMIT 1 ) AS id_dept2
-FROM data_pc p ORDER BY RAND() limit 1;";
+	$query = "SELECT id_pc,DATEDIFF(NOW(),tgl_terakhir) AS perbedaan_hari,DAYOFWEEK(tgl_terakhir) AS hari_terakhir,
+				(SELECT s.weekday FROM slot_waktu s ORDER BY RAND() LIMIT 1 ) AS weekday
+				FROM data_pc ORDER BY RAND() limit 1;";
 	$data = $this->connect -> query($query);
 		$row = mysqli_num_rows($data);
 
@@ -46,8 +47,9 @@ FROM data_pc p ORDER BY RAND() limit 1;";
 
 public function getMutatePc(){
 	$randomId = rand(1, 30);
-	$query = "SELECT p.id_pc,p.tgl_terakhir,p.id_dept,(SELECT d.id_dept FROM department d ORDER BY RAND() LIMIT 1 ) AS id_dept2
-FROM data_pc p WHERE p.id_pc = $randomId ";
+	$query = "SELECT id_pc,DATEDIFF(NOW(),tgl_terakhir) AS perbedaan_hari,DAYOFWEEK(tgl_terakhir) AS hari_terakhir,
+			(SELECT s.weekday FROM slot_waktu s ORDER BY RAND() LIMIT 1 ) AS weekday
+			FROM data_pc ORDER BY RAND() limit 1";
 	$data = $this->connect -> query($query);
 		$row = mysqli_num_rows($data);
 

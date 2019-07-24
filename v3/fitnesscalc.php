@@ -20,36 +20,27 @@ require_once('individual.php');  //supporting class file
 
         $set_fitness = 0;
         $maks_fitness = 0;
-        $array_dept = array();
+        $array_beda = array();
         $array_fitness = array();
         foreach ($individual as $key => $value) {
             $fit = new Fitnesscalc();
             $split = explode('|', $value[0]);
-            array_push($array_dept, $split[1]);
+            array_push($array_beda, $split[1]);
         }
 
-        $counts = array_count_values($array_dept);
+        $counts = array_count_values($array_beda);
+        $jml_beda = array_sum($array_beda);
+
         foreach ($individual as $key => $value) {
             $fit = new Fitnesscalc();
             $split = explode('|', $value[0]);
-            //var_dump($value[0]);
-            //$split[1] = id_dept
-            //$split[2] = id_dept2
-            /*
-            if($split[1] == $split[2]){
-                //$fitness = 0;
-               }else{
-                $set_fitness++;
-               }
-               */
-               //$split[1] = id_dept
-               //$split[2] = id_dept2
+            $hitung_fitness = 1/1-(($split[1]/$jml_beda)*($split[2]-$split[3]));
             if($counts[$split[1]] > 1){
                 $set_fitness++;
                }
-
-        echo "individu ".$value[0].' punya nilai fitness '.$set_fitness.'</br>';
-        array_push($array_fitness, $set_fitness);
+echo "1/1-(".$split[1]." / ".$jml_beda.") * (".$split[2]." - ".$split[3].")) ";
+        echo "individu ".$value[0].' punya nilai fitness '.$hitung_fitness.'</br>';
+        array_push($array_fitness, $hitung_fitness);
         $maks_fitness += $set_fitness;
 
             $set_fitness = 0;

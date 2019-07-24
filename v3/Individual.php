@@ -25,7 +25,7 @@ class Individu extends Database
         for ($i=0; $i < $size; $i++ ){  
         	$indiv = $data->getPc();
         	foreach ($indiv as $key => $value) {
-                $this->indiv[$i] = $value['id_pc'].'|'.$value['id_dept'].'|'.$value['tgl_terakhir'].'|'.$value['weekday'];
+                $this->indiv[$i] = $value['id_pc'].'|'.$value['perbedaan_hari'].'|'.$value['hari_terakhir'].'|'.$value['weekday'];
                 /*
         	 	$this->id_pc[$i] = $value['id_pc'];
         	 	$this->tgl_terakhir[$i] = $value['tgl_terakhir'];

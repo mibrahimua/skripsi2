@@ -12,6 +12,7 @@ class Population extends Individu
 	public static $poolSize=12;
 	public static $uniformRate=0.5;
 	public static $mutationRate=0.20;
+  public static $maxiteration = 100;
 	function __construct($popSize,$initial = false)
 	{
 		if(!isset($popSize) || $popSize ==0)
@@ -77,8 +78,8 @@ class Population extends Individu
         for ($i=0; $i < count($indiv1); $i++) {
            $split1 = explode('|', $indiv1[$i][0]);
                    $split2 = explode('|', $indiv2[$i][0]);
-                   $end_split1 = $split1[0].'|'.$split1[1].'|'.$split2[2];
-                   $end_split2 = $split2[0].'|'.$split2[1].'|'.$split1[2];
+                   $end_split1 = $split1[0].'|'.$split1[1].'|'.$split1[2].'|'.$split2[3];
+                   $end_split2 = $split2[0].'|'.$split2[1].'|'.$split1[2].'|'.$split1[3];;
                     $a = array();
                     $b = array();
                     array_push($a, $end_split1);
@@ -102,10 +103,11 @@ class Population extends Individu
 
             if (  Population::random() <= Population::$mutationRate) {
             	$randomId = rand(0, 30-1 ); 
+              
             	$b = new Individu();
               $a = $b->getMutatePc($randomId); 
                foreach ($a as $key => $value) {
-               	$isi = $value['id_pc'].'|'.$value['id_dept'].'|'.$value['id_dept2'];
+               	$isi = $value['id_pc'].'|'.$value['perbedaan_hari'].'|'.$value['hari_terakhir'].'|'.$value['weekday'];
                  $indiv->setGen($i,$isi);
                }
             
@@ -116,7 +118,10 @@ class Population extends Individu
     public function evolvePopulation($pop){
         $newPopulation = new Population($pop->size(),true);
 
-
+if (Population::$elitism) {
+$elitism_key =  array_search(min($pop->fitness),$pop->fitness);
+$newPopulation->saveIndividual(0,$pop->individu[$elitism_key]);
+}
  // Crossover population
         $elitismOffset=0;
         if (Population::$elitism) {
@@ -143,10 +148,7 @@ for ($i=$elitismOffset; $i < $newPopulation->size(); $i++) {
             
             Population::mutate($pop);
         }
-if (Population::$elitism) {
-$elitism_key =  array_search(min($pop->fitness),$pop->fitness);
-$newPopulation->saveIndividual(0,$pop->individu[$elitism_key]);
-}
+
 
         return $newPopulation;
     }//end of func evolve
@@ -162,12 +164,25 @@ $get = $fit->getFitness($post);
 foreach ($get as $key => $value) {
     $coba->setFitness($key,$value);
 }
-$maks_fitness = array_sum($coba->fitness);
-
-for ($i=0; $i < 100; $i++) { 
+$maks_fitness = max($coba->fitness);
+var_dump($maks_fitness);
+$k = 0;
+while ($maks_fitness >= 1) { 
     $myPop = Population::evolvePopulation($coba);
 echo "</br>";echo "</br>";
-$fit->getFitness($myPop->individu) ;
+$get = $fit->getFitness($myPop->individu) ;
+foreach ($get as $key => $value) {
+    $myPop->setFitness($key,$value);
+}
+$maks_fitness = array_sum($myPop->fitness);
+var_dump($maks_fitness);
+$k++;
+echo "putaran ke ".$k;
+if ( $k > Population::$maxiteration)
+      {
+        echo "\n-- Ending TOO MANY (".Population::$maxiteration.") stagnant generations unchanged. Ending APPROX solution below \n..)";
+          break;
+      }
 }
 /*
 while($maks_fitness > 0){

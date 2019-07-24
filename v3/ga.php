@@ -42,7 +42,8 @@ echo "\n-----------------------------------------------";
  			for ($i=0; $i < 2; $i++)  
  			{
             $generationCount++;
-			$most_fit=$myPop->getFittest()->getFitness($myPop);
+			$most_fit=$myPop->getFittest()->getFitness();
+			//var_dump($most_fit);
           
 		   $myPop = algorithm::evolvePopulation($myPop); //create a new generation
 		   

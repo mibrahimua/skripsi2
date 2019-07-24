@@ -72,10 +72,14 @@ class algorithm {
             if (  algorithm::random() <= algorithm::$uniformRate)
 			{
                 $newSol->setIdPc($i, $indiv1->getIdPc($i) );
-                $newSol->setNilaiGen($i, $indiv1->getNilaiGen($i));
+                $newSol->setTglTerakhir($i, $indiv1->getTglTerakhir($i));
+                $newSol->setIdDept($i, $indiv1->getIdDept($i) );
+                $newSol->setIdDept2($i, $indiv1->getIdDept2($i) );
             } else {
-                $newSol->setIdPc($i, $indiv2->getIdPc($i) );
-                $newSol->setNilaiGen($i, $indiv2->getNilaiGen($i));
+                $newSol->setIdPc($i, $indiv1->getIdPc($i) );
+                $newSol->setTglTerakhir($i, $indiv1->getTglTerakhir($i));
+                $newSol->setIdDept($i, $indiv1->getIdDept($i) );
+                $newSol->setIdDept2($i, $indiv1->getIdDept2($i) );
             }
         }
         return $newSol;
@@ -91,7 +95,9 @@ class algorithm {
               $a = $indiv->getMutatePc(); 
                foreach ($a as $key => $value) {
                   $indiv->setIdPc($i,$value['id_pc']);
-                  $indiv->setNilaiGen($i,$value['nilai_gen']);
+                  $indiv->setTglTerakhir($i,$value['tgl_terakhir']);
+                  $indiv->setIdDept($i,$value['id_dept']);
+                  $indiv->setIdDept2($i,$value['id_dept2']);
                }
             
             }
@@ -115,4 +121,18 @@ class algorithm {
 
 
 	}  //class
+
+    $awalPop = new population(12,true);
+
+     $most_fit=$awalPop->getFittest()->getFitness();
+     //var_dump($most_fit);
+    // var_dump($awalPop->people[$most_fit]->id_pc);
+    $evolusi = algorithm::evolvePopulation($awalPop);
+foreach ($evolusi->people as $key) {
+         echo 'id pc :';print_r($key->id_pc);echo '</br>';
+         echo 'id dept :';print_r($key->id_dept);echo '</br>';
+         echo 'id dept2 :';print_r($key->id_dept2);echo '</br>';
+         echo 'fitness :';print_r($key->fitness);echo '</br>'.'</br>';
+     }
+
 ?>

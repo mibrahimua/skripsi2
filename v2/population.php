@@ -41,11 +41,11 @@ require_once('individual.php');  //supporting class file
     /* Getters */
 	
 	/* find the fittest individual in this population */
-    public function getFittest() {
+    public function getFittest($pop) {
         $fittest = $this->people[0];  //create a starting point for fitness person0
         // Loop through individuals to find fittest
         for ($i = 0; $i < $this->size(); $i++) {
-            if ($fittest->getFitness() >= $this->people[$i]->getFitness() ) {
+            if ($fittest->getFitness($pop) >= $this->people[$i]->getFitness($pop) ) {
                 $fittest = $this->people[$i];
 				//echo "\nPopulation:getFittest() is now: ".$this->people[$i]->getFitness();
             }
@@ -92,7 +92,7 @@ require_once('individual.php');  //supporting class file
 	 public function __toString() {
        $population_string=null;
         for ($i = 0; $i <  count($this->people); $i++) {
-       $population_string.="\n Individual: ".$this->people[$i]." Fitness:".$this->people[$i]->getFitness();
+       $population_string.="\n Individual: ".$this->people[$i];
         }
 	
 		return $population_string;

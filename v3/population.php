@@ -9,7 +9,7 @@ class Population extends Individu
 	public $individu=array();
 	static $static_array = array();
 	public static $elitism=true;
-	public static $poolSize=12;
+	public static $poolSize=1;
 	public static $uniformRate=0.5;
 	public static $mutationRate=0.20;
   public static $maxiteration = 100;
@@ -44,11 +44,17 @@ class Population extends Individu
 	
      public static function poolSelection($pop) {
         // Create a pool population
+     asort($pop->fitness);
+      $t = $pop->fitness;
+    
+      $getMaksIndiv = array_keys($t, min($t));
+      
+     
         $pool = new population(Population::$poolSize, false);
 	   for ($i=0; $i < Population::$poolSize; $i++) {
 	     $randomId = rand(0, $pop->size()-1 ); //Get a random individual from anywhere in the population
 	     //var_dump($randomId);
-		 $pool->saveIndividual($i, $pop->getIndividual( $randomId));
+		 $pool->saveIndividual($i, $pop->getIndividual($randomId));
         }
 
         // Get the fittest
@@ -61,19 +67,7 @@ class Population extends Individu
     public static function  crossover($indiv1, $indiv2) 
 	 {
        $newSol = new individu();  //create a offspring
-       /*
-       echo '</br>';
-       echo "individu ".$indiv1[0]." dengan individu ".$indiv2[0];
-       echo '</br>';
-       $split1 = explode('|', $indiv1[0]);
-       $split2 = explode('|', $indiv2[0]);
-       $end_split1 = $split1[0].'|'.$split1[1].'|'.$split2[2];
-       $end_split2 = $split2[0].'|'.$split2[1].'|'.$split1[2];
-        $a = array();
-        $b = array();
-        array_push($a, $end_split1);
-        array_push($b, $end_split2);
-        */
+      
         // Loop through genes
         for ($i=0; $i < count($indiv1); $i++) {
            $split1 = explode('|', $indiv1[$i][0]);
@@ -85,10 +79,10 @@ class Population extends Individu
                     array_push($a, $end_split1);
                     array_push($b, $end_split2);
             // Crossover at which point 0..1 , .50 50% of time
-            if (  Population::random() <= Population::$uniformRate)
-			{
+            if (Population::random() <= Population::$uniformRate){
+			       //  $randomId = rand(0, $pop->size()-1 ); 
                 echo '</br>';
-               echo "individu ";print_r($a);echo " dengan individu ";print_r($b);
+               echo "crossover individu ";print_r($a);echo " dengan individu ";print_r($b);
                echo '</br>';
                 $newSol->setGen($i, $a );
             } else {
@@ -97,22 +91,28 @@ class Population extends Individu
         }
         return $newSol;
     }
-    public static function mutate( $indiv) {
+    public static function mutate($pop) {
         // Loop through genes
-        for ($i=0; $i < 12; $i++) {
+      $newSol = new individu();
+        for ($i=0; $i < $pop->size(); $i++) {
 
             if (  Population::random() <= Population::$mutationRate) {
-            	$randomId = rand(0, 30-1 ); 
+            	$randomId = rand(1, 6); 
+              $individu = $pop->getIndividual($i);
+              foreach ($individu as $key => $value) {
+              $split = explode('|', $value);
+              $individu = $split[0].'|'.$split[1].'|'.$split[2].'|'.$randomId;
+               $a = array();
+               array_push($a, $individu);
+                echo '</br>';
+               echo "individu mutasi ";print_r($a);
+               echo '</br>';
+              $newSol->setGen($i,$a);
+              }
               
-            	$b = new Individu();
-              $a = $b->getMutatePc($randomId); 
-               foreach ($a as $key => $value) {
-               	$isi = $value['id_pc'].'|'.$value['perbedaan_hari'].'|'.$value['hari_terakhir'].'|'.$value['weekday'];
-                 $indiv->setGen($i,$isi);
-               }
-            
             }
         }
+        return $newSol;
     }
 
     public function evolvePopulation($pop){
@@ -129,25 +129,30 @@ $newPopulation->saveIndividual(0,$pop->individu[$elitism_key]);
         } else {
             $elitismOffset = 0;
         }
-for ($i = $elitismOffset; $i < 2; $i++){ 
+for ($i = $elitismOffset; $i < $pop->size(); $i++){ 
+  if (Population::random() <= Population::$uniformRate){
     $indiv1 = Population::poolSelection($pop);
-   // $indiv1 = $pop->getIndividual($indiv1);
     $indiv2 = Population::poolSelection($pop);
-    //$indiv2 = $pop->getIndividual($indiv2);
     $newIndiv =  Population::crossover($indiv1, $indiv2);
     foreach ($newIndiv->indiv as $key => $value) {
         $newPopulation->saveIndividual($i, $value); 
     }
+  }
     //
     //var_dump($newPopulation->getIndividual($i));
 }
 
 
-for ($i=$elitismOffset; $i < $newPopulation->size(); $i++) {
+//for ($i=$elitismOffset; $i < $newPopulation->size(); $i++) {
             //var_dump($newPopulation->getIndividual($i));
             
-            Population::mutate($pop);
+         $newMutate = Population::mutate($pop);
+         foreach ($newMutate->indiv as $key => $value) {
+          $randomId = rand(0, 11-1 );
+        $newPopulation->saveIndividual($randomId, $value); 
         }
+         
+  //      }
 
 
         return $newPopulation;
@@ -167,14 +172,15 @@ foreach ($get as $key => $value) {
 $maks_fitness = max($coba->fitness);
 var_dump($maks_fitness);
 $k = 0;
-while ($maks_fitness >= 1) { 
+while ($maks_fitness >= 1.01) { 
     $myPop = Population::evolvePopulation($coba);
+    //var_dump($myPop->individu);
 echo "</br>";echo "</br>";
 $get = $fit->getFitness($myPop->individu) ;
 foreach ($get as $key => $value) {
     $myPop->setFitness($key,$value);
 }
-$maks_fitness = array_sum($myPop->fitness);
+$maks_fitness = max($myPop->fitness);
 var_dump($maks_fitness);
 $k++;
 echo "putaran ke ".$k;

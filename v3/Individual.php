@@ -1,7 +1,7 @@
 <?php
 
 
-require_once('database.php');
+include_once('database.php');
 require_once('fitnesscalc.php');
 
 
@@ -104,7 +104,7 @@ class Individu extends Database
     public function saveIndividual($index, $indiv) {
         $this->people[$index] = $indiv;
     }
-	
+/*	
 public function __toString() {
         $geneString = null;
         for ($i = 0; $i <  count($this->id_pc); $i++) {
@@ -113,8 +113,9 @@ public function __toString() {
         
         return $geneString;
     }
-
+*/
 }//end of class individual
+/*
 $data = new Individu();
 $data->generateAllIndividual();
 $s = array_rand($data->indivPool,1);
@@ -122,7 +123,7 @@ $randomDay = rand(1, 6);
 $a = explode('|', $data->indivPool[$s]);
 array_push($a, $randomDay);
 $b = implode('|', $a);
-var_dump($b);
-
+//var_dump($b);
+*/
 
 ?>

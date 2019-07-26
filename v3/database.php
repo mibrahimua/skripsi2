@@ -45,6 +45,18 @@ public function getPc(){
 	return $hasil;
 }
 
+public function getAllPc(){
+	$query = "SELECT id_pc,DATEDIFF(NOW(),tgl_terakhir) AS perbedaan_hari,DAYOFWEEK(tgl_terakhir) AS hari_terakhir FROM data_pc ORDER BY RAND();";
+	$data = $this->connect -> query($query);
+		$row = mysqli_num_rows($data);
+
+		for ($i=0; $i < $row; $i++) { 
+			$d = mysqli_fetch_array($data);
+			$hasil[]=$d;
+	}
+	return $hasil;
+}
+
 public function getMutatePc(){
 	$randomId = rand(1, 30);
 	$query = "SELECT id_pc,DATEDIFF(NOW(),tgl_terakhir) AS perbedaan_hari,DAYOFWEEK(tgl_terakhir) AS hari_terakhir,

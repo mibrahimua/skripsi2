@@ -36,6 +36,27 @@ class Individu extends Database
 			
             }
     }
+
+    public function generateAllIndividual() {
+        //
+        //now lets randomly load the genes (array of ascii characters)   to the size of the array
+        $data = new Database();
+            $indiv = $data->getAllPc();
+            $i=0;
+            foreach ($indiv as $key => $value) {
+                $this->indivPool[$i] = $value['id_pc'].'|'.$value['perbedaan_hari'].'|'.$value['hari_terakhir'];
+                $i++;
+                /*
+                $this->id_pc[$i] = $value['id_pc'];
+                $this->tgl_terakhir[$i] = $value['tgl_terakhir'];
+                $this->id_dept[$i] = $value['id_dept'];
+                $this->id_dept2[$i] = $value['id_dept2'];
+*/
+                 } 
+            
+            
+    }
+
     public function setGen($index,$value){
         $this->indiv[$index] = $value;
     }
@@ -94,7 +115,14 @@ public function __toString() {
     }
 
 }//end of class individual
-
+$data = new Individu();
+$data->generateAllIndividual();
+$s = array_rand($data->indivPool,1);
+$randomDay = rand(1, 6);
+$a = explode('|', $data->indivPool[$s]);
+array_push($a, $randomDay);
+$b = implode('|', $a);
+var_dump($b);
 
 
 ?>

@@ -8,11 +8,13 @@ class Population extends Individu
 {
 	public $individu=array();
 	static $static_array = array();
+  public static $popSize = 12;
 	public static $elitism=true;
 	public static $poolSize=1;
 	public static $uniformRate=0.5;
 	public static $mutationRate=0.20;
-  public static $maxiteration = 100;
+  public static $maxiteration = 200;
+
 	function __construct($popSize,$initial = false)
 	{
 		if(!isset($popSize) || $popSize ==0)
@@ -22,11 +24,15 @@ class Population extends Individu
 		$this->individu[$i] = new Individu();
 
 	if($initial){
+    $dataPool = new individu();
+    $dataPool->generateAllIndividual();
 		for($i=0;$i<count($this->individu);$i++){
-			$new_indiv = new Individu();
-			 $new_indiv->generateIndividual(1);
-			 $new_sol = $new_indiv->indiv;
-			$this->saveIndividual($i, $new_sol);
+			$randomDay = rand(1, 6);
+			 $key = array_rand($dataPool->indivPool,1);
+       $a = explode('|', $dataPool->indivPool[$key]);
+        array_push($a, $randomDay);
+        $data = implode('|', $a);
+			$this->saveIndividual($i, $data);
 			}
 		}
 	}
@@ -161,11 +167,13 @@ for ($i = $elitismOffset; $i < $pop->size(); $i++){
 }//end of class
 $z = 0;
 
-    $coba = new Population(12,true);
+    $coba = new Population(Population::$popSize,true);
 $post = $coba->individu;
+//var_dump($post);
+
 $fit = new Fitnesscalc();
 $get = $fit->getFitness($post);
-
+/*
 foreach ($get as $key => $value) {
     $coba->setFitness($key,$value);
 }
@@ -190,6 +198,7 @@ if ( $k > Population::$maxiteration)
           break;
       }
 }
+*/
 /*
 while($maks_fitness > 0){
 

@@ -41,7 +41,7 @@ class Individu extends Database
         //
         //now lets randomly load the genes (array of ascii characters)   to the size of the array
         $data = new Database();
-            $indiv = $data->getAllPc();
+            $indiv = $data->getPoolPc();
             $i=0;
             foreach ($indiv as $key => $value) {
                 $this->indivPool[$i] = $value['id_pc'].'|'.$value['perbedaan_hari'].'|'.$value['hari_terakhir'];

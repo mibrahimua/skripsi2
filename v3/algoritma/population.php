@@ -94,9 +94,9 @@ class Population extends Individu
             // Crossover at which point 0..1 , .50 50% of time
             if (Population::random() <= Population::$uniformRate){
 			       //  $randomId = rand(0, $pop->size()-1 ); 
-               echo '</br>';
-               echo "crossover individu index ".$keyIndiv1;print_r($a);echo " dengan individu index ".$keyIndiv2;print_r($b);
-               echo '</br>';
+              // echo '</br>';
+              // echo "crossover individu index ".$keyIndiv1;print_r($a);echo " dengan individu index ".$keyIndiv2;print_r($b);
+               //echo '</br>';
                 $newSol->setGen($keyIndiv1, $a );
             } else {
                 $newSol->setGen($keyIndiv2, $b );
@@ -198,9 +198,9 @@ for ($i = $elitismOffset; $i < $pop->size(); $i++){
           $a = explode('|', $mutate_value);
           array_push($a, $randomDay);
           $data = implode('|', $a);
-          echo '</br>';
-               echo "individu mutasi index ".$randomId." menjadi ";print_r($data);
-             echo '</br>';
+         // echo '</br>';
+               //echo "individu mutasi index ".$randomId." menjadi ";print_r($data);
+            // echo '</br>';
              //var_dump($mutate_value);
           //$array_mutate = array();
          // array_push($array_mutate, $data);
@@ -219,9 +219,8 @@ for ($i = $elitismOffset; $i < $pop->size(); $i++){
     }//end of func evolve
 
 }//end of class
-$z = 0;
-
-    $coba = new Population(Population::$popSize,true);
+/*
+$coba = new Population(Population::$popSize,true);
 $post = $coba->individu;
 var_dump($post);echo '</br>';
 
@@ -265,5 +264,5 @@ foreach ($myPop->individu as $key => $value) {
 
 }
 echo "FiNISSSHH";
-
+*/
 ?>

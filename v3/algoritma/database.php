@@ -31,10 +31,9 @@ public static function random() {
   return (float)rand()/(float)getrandmax();  /* return number from 0 .. 1 as a decimal */
 }    
 
-public function getPc(){
-	$query = "SELECT id_pc,DATEDIFF(NOW(),tgl_terakhir) AS perbedaan_hari,DAYOFWEEK(tgl_terakhir) AS hari_terakhir,
-				(SELECT s.weekday FROM slot_waktu s ORDER BY RAND() LIMIT 1 ) AS weekday
-				FROM data_pc ORDER BY RAND() limit 1;";
+public function getAllPc(){
+	$query = "SELECT p.id_pc,p.kode_inventori,d.nm_dept,tgl_terakhir,DATEDIFF(NOW(),p.tgl_terakhir) AS perbedaan_hari FROM data_pc p JOIN department d ON p.id_dept = d.id_dept;";
+
 	$data = $this->connect -> query($query);
 		$row = mysqli_num_rows($data);
 
@@ -45,8 +44,57 @@ public function getPc(){
 	return $hasil;
 }
 
-public function getAllPc(){
+public function getPc($id_pc){
+	$query = "SELECT p.id_pc,p.kode_inventori,d.nm_dept,tgl_terakhir,DATEDIFF(NOW(),p.tgl_terakhir) AS perbedaan_hari FROM data_pc p JOIN department d ON p.id_dept = d.id_dept WHERE p.id_pc = $id_pc";
+
+	$data = $this->connect -> query($query);
+		$row = mysqli_num_rows($data);
+
+		for ($i=0; $i < $row; $i++) { 
+			$d = mysqli_fetch_array($data);
+			$hasil[]=$d;
+	}
+	return $hasil;
+}
+
+public function getPoolPc(){
 	$query = "SELECT id_pc,DATEDIFF(NOW(),tgl_terakhir) AS perbedaan_hari,DAYOFWEEK(tgl_terakhir) AS hari_terakhir FROM data_pc ORDER BY RAND();";
+	$data = $this->connect -> query($query);
+		$row = mysqli_num_rows($data);
+
+		for ($i=0; $i < $row; $i++) { 
+			$d = mysqli_fetch_array($data);
+			$hasil[]=$d;
+	}
+	return $hasil;
+}
+
+public function deleteHasilGenetik(){
+	$query_trunc = "TRUNCATE hasil_genetik";
+	$data = $this->connect -> query($query_trunc);
+
+	if($data){
+		return true;
+	}else{
+		return false;
+	}
+
+}
+
+public function saveHasilGenetik($id_pc,$fitness){
+	$query = "INSERT INTO hasil_genetik (id_pc,kode_inventori,id_dept,tgl_terakhir,fitness)
+			SELECT id_pc,kode_inventori,id_dept,tgl_terakhir,$fitness FROM data_pc WHERE id_pc = $id_pc;";
+	$data = $this->connect -> query($query);
+	if($data){
+		return true;
+	}else{
+		return false;
+	}
+
+}
+
+public function getHasilGenetik(){
+	$query = "SELECT h.id_pc,h.kode_inventori,d.nm_dept,h.tgl_terakhir,h.fitness FROM hasil_genetik h JOIN department d ON h.id_dept = d.id_dept ";
 	$data = $this->connect -> query($query);
 		$row = mysqli_num_rows($data);
 
@@ -213,7 +261,43 @@ public static function mutasi($pop) {
  public function size(){
 	return count($this->slot_waktu);
 }
-
+	public function tanggal_indo($tanggal, $cetak_hari = false)
+	{
+	   $hari = array ( 0 =>  'Minggu',  
+		'Senin',
+		'Selasa',
+		'Rabu',
+		'Kamis',
+		'Jumat',
+		'Sabtu'
+		
+		);
+	            
+	    $bulan = array (1 =>   'Januari',
+	                'Februari',
+	                'Maret',
+	                'April',
+	                'Mei',
+	                'Juni',
+	                'Juli',
+	                'Agustus',
+	                'September',
+	                'Oktober',
+	                'November',
+	                'Desember'
+	            );
+	    $split    = explode('-', $tanggal);
+	    $tgl_indo = $split[2] . ' ' . $bulan[ (int)$split[1] ] . ' ' . $split[0];
+	    
+	    if ($cetak_hari) {
+	        $num = date('N', strtotime($tanggal));
+	        if($num == 7){
+	        	$num =0;
+	        }
+	        return $hari[$num] . ', ' . $tgl_indo;
+	    }
+	    return $tgl_indo;
+	}
 }//end of clas database
 /*
 $data = new database();

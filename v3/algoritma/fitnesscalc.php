@@ -50,8 +50,8 @@ require_once('individual.php');  //supporting class file
                }
               
 
-echo $i++." 1/1+(".$split[1]." / ".$jml_beda.") * (".$split[3]." - ".$array_idhari[$ds].")) ";
-        echo "individu ".$value. '=  punya nilai fitness '.$lebih.'</br>';
+//echo $i++." 1/1+(".$split[1]." / ".$jml_beda.") * (".$split[3]." - ".$array_idhari[$ds].")) ";
+       // echo "individu ".$value. '=  punya nilai fitness '.$lebih.'</br>';
         array_push($array_fitness, $lebih);
         $maks_fitness += $set_fitness;
 

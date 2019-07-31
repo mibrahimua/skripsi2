@@ -11,22 +11,24 @@ if($aksi == "update"){
     $tgl_pemeliharaan = $split[2].'-'.$split[1].'-'.$split[0];
 //var_dump($tgl_pemeliharaan);
   // var_dump($_POST);
-   $data->updatePc($_POST['id_pc'],$_POST['id_dept'],$tgl_pemeliharaan);
+   $data->updateDataPc($_POST['id_pc'],$_POST['id_dept'],$tgl_pemeliharaan);
  }
 }//end of isset get update
+
+if(isset($_GET['cek'])){
+	$id_pc = $_GET['cek'];
+
+	
+	$get = $data->getPc($id_pc);
 ?>
-<form action="lihat_data.php?aksi=update" method="post">
+<form action="edit_data.php?aksi=update" method="post">
 	
 
 <table class="table table-hover" >
 	
 	
 	<?php
-if(isset($_GET['cek'])){
-	$id_pc = $_GET['cek'];
 
-	
-	$get = $data->getPc($id_pc);
 
 
 		foreach ($get as $key => $value) {
@@ -55,15 +57,9 @@ if(isset($_GET['cek'])){
 			</td>
 			</tr>
 			<tr>
-			<th>Pemeliharaan Terakhir</th>
-			<td>
-			<input type="text" name="tgl_terakhir" value="<?php  echo $data->tanggal_indo($value['tgl_terakhir'],true); ?>" class="form-control" disabled>
-			</td>
-			</tr>
-			<tr>
 			<th>Jadwal Pemeliharaan</th>
 			<td>
-				<input id="datepicker" name="tgl_pemeliharaan" class="form-control" required readonly="readonly"/>
+				<input id="datepicker" name="tgl_pemeliharaan" class="form-control" required  readonly="readonly"/>
 			</td>
 			</tr>
 			<tr>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 24, 2019 at 04:49 AM
+-- Generation Time: Jul 31, 2019 at 12:01 PM
 -- Server version: 10.1.21-MariaDB
 -- PHP Version: 5.6.30
 
@@ -97,7 +97,41 @@ INSERT INTO `department` (`id_dept`, `nm_dept`) VALUES
 (10, 'Yusuf 2'),
 (11, 'Yusuf 3'),
 (12, 'Ibrahim 1'),
-(13, 'Ibrahim 2');
+(13, 'Ibrahim 2'),
+(14, 'Poliklinik');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `hasil_genetik`
+--
+
+CREATE TABLE `hasil_genetik` (
+  `id_pc` int(10) NOT NULL,
+  `weekday` int(2) NOT NULL,
+  `kode_inventori` varchar(50) NOT NULL,
+  `id_dept` int(10) NOT NULL,
+  `tgl_terakhir` date NOT NULL,
+  `fitness` float NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `hasil_genetik`
+--
+
+INSERT INTO `hasil_genetik` (`id_pc`, `weekday`, `kode_inventori`, `id_dept`, `tgl_terakhir`, `fitness`) VALUES
+(25, 0, 'SIM.2018.01.01.04.25', 6, '2016-08-15', 1.0752),
+(3, 1, 'SIM.2018.01.01.04.03', 3, '2017-01-14', 1.19384),
+(11, 2, 'SIM.2018.01.01.04.11', 2, '2015-05-11', 1.10737),
+(6, 3, 'SIM.2018.01.01.04.06', 2, '2015-12-08', 0.907325),
+(4, 4, 'SIM.2018.01.01.04.04', 5, '2016-07-09', 1.07777),
+(2, 5, 'SIM.2018.01.01.04.02', 8, '2017-02-10', 0.937265),
+(21, 6, 'SIM.2018.01.01.04.21', 6, '2016-01-28', 1.08912),
+(26, 7, 'SIM.2018.01.01.04.26', 3, '2016-09-05', 1.07374),
+(28, 8, 'SIM.2018.01.01.04.28', 3, '2015-08-25', 0.800028),
+(13, 9, 'SIM.2018.01.01.04.13', 10, '2015-08-22', 0.79961),
+(22, 10, 'SIM.2018.01.01.04.22', 3, '2016-09-13', 0.926821),
+(29, 11, 'SIM.2018.01.01.04.29', 7, '2016-04-19', 0.749756);
 
 -- --------------------------------------------------------
 
@@ -160,12 +194,12 @@ ALTER TABLE `slot_waktu`
 -- AUTO_INCREMENT for table `data_pc`
 --
 ALTER TABLE `data_pc`
-  MODIFY `id_pc` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id_pc` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 --
 -- AUTO_INCREMENT for table `department`
 --
 ALTER TABLE `department`
-  MODIFY `id_dept` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id_dept` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 --
 -- AUTO_INCREMENT for table `slot_waktu`
 --

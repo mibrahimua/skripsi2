@@ -12,6 +12,13 @@ $(document).ready(function(){
 
  <script>
         $('#datepicker').datepicker({
+          format: 'dd-mm-yyyy',
             uiLibrary: 'bootstrap4'
         });
+    </script>
+
+    <script type="text/javascript">
+      $('.dropdown').click(function(){
+  $('.dropdown-menu').toggleClass('show');
+});
     </script>

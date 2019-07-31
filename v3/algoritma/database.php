@@ -98,6 +98,67 @@ public function updatePc($id_pc,$id_dept,$tgl_pemeliharaan){
   <?php 
 		}
   }
+public function tambahPc($kode_inventori,$id_dept,$tgl_pemeliharaan){
+	
+	$query = "SELECT kode_inventori FROM data_pc WHERE kode_inventori = '$kode_inventori'";
+
+	$data = $this->connect -> query($query);
+	$row = mysqli_num_rows($data);
+	
+	if($row == 0){
+	
+	$query = "INSERT INTO data_pc (kode_inventori,id_dept,tgl_terakhir) VALUES ('$kode_inventori','$id_dept','$tgl_pemeliharaan')";	
+	$data = $this->connect -> query($query);	
+  ?>
+   <script type="text/javascript">alert('Data Tersimpan'); window.location = 'index.php';</script>
+     <?php }else{?>
+   <script type="text/javascript">alert('Ops, Ada Kesalahan'); window.location = 'index.php';</script>
+  <?php 
+		}
+  }
+
+public function updateDataPc($id_pc,$id_dept,$tgl_pemeliharaan){
+	
+	$query = "UPDATE data_pc SET id_dept = '$id_dept', tgl_terakhir = '$tgl_pemeliharaan' WHERE id_pc ='$id_pc'";
+
+	$data = $this->connect -> query($query);
+		if($data){
+  ?>
+   <script type="text/javascript">alert('Data Tersimpan'); window.location = 'index.php';</script>
+     <?php }else{?>
+   <script type="text/javascript">alert('Ops, Ada Kesalahan'); window.location = 'index.php';</script>
+  <?php 
+		}
+  }
+
+  public function hapusDataPc($id_pc){
+	
+	$query = "DELETE FROM data_pc WHERE id_pc ='$id_pc'";
+
+	$data = $this->connect -> query($query);
+		if($data){
+  ?>
+   <script type="text/javascript">alert('Data Berhasil Terhapus'); window.location = 'index.php';</script>
+     <?php }else{?>
+   <script type="text/javascript">alert('Ops, Ada Kesalahan'); window.location = 'index.php';</script>
+  <?php 
+		}
+  }
+
+public function tambahDept($nm_dept){
+	
+	$query = "INSERT INTO department (nm_dept) VALUES ('$nm_dept')";
+
+	$data = $this->connect -> query($query);
+		if($data){
+  ?>
+   <script type="text/javascript">alert('Data Tersimpan'); window.location = 'index.php';</script>
+     <?php }else{?>
+   <script type="text/javascript">alert('Ops, Ada Kesalahan'); window.location = 'index.php';</script>
+  <?php 
+		}
+  }
+
 
 public function getPoolPc(){
 	$query = "SELECT id_pc,DATEDIFF(NOW(),tgl_terakhir) AS perbedaan_hari,DAYOFWEEK(tgl_terakhir) AS hari_terakhir FROM data_pc WHERE DATEDIFF(NOW(),tgl_terakhir) > 30 ORDER BY RAND();";
@@ -126,10 +187,12 @@ public function deleteHasilGenetik(){
 public function saveHasilGenetik($id_pc,$weekday,$fitness){
 	$query = "INSERT INTO hasil_genetik (id_pc,weekday,kode_inventori,id_dept,tgl_terakhir,fitness)
 			SELECT id_pc,$weekday,kode_inventori,id_dept,tgl_terakhir,$fitness FROM data_pc WHERE id_pc = $id_pc;";
+
 	$data = $this->connect -> query($query);
 	if($data){
 		return true;
 	}else{
+
 		return false;
 	}
 

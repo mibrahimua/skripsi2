@@ -56,13 +56,14 @@ foreach ($myPop->individu as $key => $value) {
 
 	}
 	?>php
+	
 <script type="text/javascript">alert('Data Telah Di Update'); window.location = 'lihat_jadwal.php';</script>
 ?>
 <?php
 }
 $tampilData = new Database();
 ?>
-<a href="lihat_jadwal.php?hitung">Hitung Jadwal</a>
+<a href="lihat_jadwal.php?hitung" class="btn btn-primary">Hitung Jadwal</a>
 <table class="table table-hover">
 	<thead>
 	<tr>
@@ -89,7 +90,7 @@ $tampilData = new Database();
 			<td><?php echo $value['nm_dept']; ?></td>
 			<td><?php echo $tampilData->tanggal_indo($value['tgl_terakhir'],true);  ?></td>
 			<td><?php echo $value['fitness']; ?></td>
-			<td><a href="lihat_data.php?cek=<?php echo $value['id_pc'];?>">Cek</a></td>
+			<td><a href="lihat_data.php?cek=<?php echo $value['id_pc'];?>" class="btn btn-success">Cek</a></td>
 			</tr>
 		<?php
 		}

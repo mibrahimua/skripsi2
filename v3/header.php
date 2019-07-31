@@ -22,15 +22,20 @@ if($_SESSION['nama_user']){
 	<title>Penjadwalan Pemeliharaan Komputer <?php echo @$_GET['hlm'];?></title>
 
 	<link rel="stylesheet" href="lib/css/bootstrap.css">
+	<link rel="stylesheet" href="lib/css/bootstrap.min.css">
+	<script src="lib/js/bootstrap.min.js"></script>
+	<script src="lib/js/jquery.min.js"></script>
 
-	<link rel="stylesheet" href="lib/css/font-awesome.min.css">
+    <!--
+    <link rel="stylesheet" href="lib/css/gijgo.min.css"/>
+	-->
+	<link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+	<script src="lib/js/gijgo.min.js" type="text/javascript"></script>
+    
 
-	<link rel="stylesheet" href="lib/css/style.css">
-
-	<script src="lib/jquery.min.js"></script>
-
-	<script src="lib/bootstrap.min.js"></script>
 </head>
 <body style="background-color: GhostWhite">
-<a href="index.php">Halaman Utama</a>
-<a href="lihat_jadwal.php">Lihat Jadwal</a>
+
+	<?php include 'menu_navbar.php'; ?>
+	
+

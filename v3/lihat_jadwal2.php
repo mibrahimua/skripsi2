@@ -18,7 +18,7 @@ $maks_fitness = max($coba->fitness);
 var_dump($maks_fitness);
 
 $k = 0;
-while ($maks_fitness >= 1.2) {
+while ($maks_fitness >= 1.5) {
 
     $myPop = Population::evolvePopulation($coba);
     //$one = array();
@@ -63,8 +63,7 @@ foreach ($myPop->individu as $key => $value) {
 $tampilData = new Database();
 ?>
 <a href="lihat_jadwal.php?hitung">Hitung Jadwal</a>
-<table class="table table-hover">
-	<thead>
+<table class="table table-hover" >
 	<tr>
 	<th>No</th>
 	<th>Hari</th>
@@ -74,8 +73,7 @@ $tampilData = new Database();
 	<th>Fitness</th>
 	<th>Fungsi</th>
 	</tr>
-	</thead>
-	<tbody id="myTable">
+	<tr>
 		<?php
 		$get = $tampilData->getHasilGenetik();
 		$i=1;
@@ -95,7 +93,5 @@ $tampilData = new Database();
 		}
 
 		?>
-	</tbody>
+	</tr>
 </table>
-
-<?php require_once 'footer.php' ?>

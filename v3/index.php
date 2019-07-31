@@ -6,7 +6,8 @@ $data = new Database();
 $list_pc = $data->getAllPc();
 
 ?>
-<table class="table table-hover" >
+<table class="table table-hover">
+	<thead>
 	<tr>
 	<th>No</th>
 	<th>Kode Inventori</th>
@@ -14,7 +15,9 @@ $list_pc = $data->getAllPc();
 	<th>Pemeliharaan Terakhir</th>
 	<th>Selisih Hari</th>
 	</tr>
-	<tr>
+	</thead>
+	<tbody id="myTable">
+	
 		<?php
 		$i=1;
 		foreach ($list_pc as $key => $value) {
@@ -30,5 +33,10 @@ $list_pc = $data->getAllPc();
 		}
 
 		?>
-	</tr>
+	
+	</tbody>
 </table>
+<?php
+
+require_once 'footer.php'
+?>

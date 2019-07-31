@@ -45,7 +45,7 @@ public function getAllPc(){
 }
 
 public function getPc($id_pc){
-	$query = "SELECT p.id_pc,p.kode_inventori,d.nm_dept,tgl_terakhir,DATEDIFF(NOW(),p.tgl_terakhir) AS perbedaan_hari FROM data_pc p JOIN department d ON p.id_dept = d.id_dept WHERE p.id_pc = $id_pc";
+	$query = "SELECT p.id_pc,p.kode_inventori,d.id_dept,d.nm_dept,tgl_terakhir,DATEDIFF(NOW(),p.tgl_terakhir) AS perbedaan_hari FROM data_pc p JOIN department d ON p.id_dept = d.id_dept WHERE p.id_pc = $id_pc";
 
 	$data = $this->connect -> query($query);
 		$row = mysqli_num_rows($data);
@@ -57,8 +57,50 @@ public function getPc($id_pc){
 	return $hasil;
 }
 
+public function getNmDept($id_dept){
+	$query = "SELECT id_dept,nm_dept FROM department WHERE id_dept = '$id_dept'";
+
+	$data = $this->connect -> query($query);
+		$row = mysqli_num_rows($data);
+
+		for ($i=0; $i < $row; $i++) { 
+			$d = mysqli_fetch_array($data);
+			$hasil[]=$d;
+	}
+	return $hasil;
+}
+
+public function getAllNmDept($id_dept){
+	$query = "SELECT id_dept,nm_dept FROM department WHERE id_dept != '$id_dept' ";
+
+	$data = $this->connect -> query($query);
+		$row = mysqli_num_rows($data);
+
+		for ($i=0; $i < $row; $i++) { 
+			$d = mysqli_fetch_array($data);
+			$hasil[]=$d;
+	}
+	return $hasil;
+}
+
+public function updatePc($id_pc,$id_dept,$tgl_pemeliharaan){
+	
+	$query = "UPDATE data_pc SET id_dept = '$id_dept', tgl_terakhir = '$tgl_pemeliharaan' WHERE id_pc ='$id_pc'";
+
+	$data = $this->connect -> query($query);
+		if($data){
+	$query = "DELETE FROM hasil_genetik WHERE id_pc = '$id_pc'";
+	$data = $this->connect->query($query);
+  ?>
+   <script type="text/javascript">alert('Data Tersimpan'); window.location = 'lihat_jadwal.php';</script>
+     <?php }else{?>
+   <script type="text/javascript">alert('Ops, Ada Kesalahan'); window.location = 'index.php';</script>
+  <?php 
+		}
+  }
+
 public function getPoolPc(){
-	$query = "SELECT id_pc,DATEDIFF(NOW(),tgl_terakhir) AS perbedaan_hari,DAYOFWEEK(tgl_terakhir) AS hari_terakhir FROM data_pc ORDER BY RAND();";
+	$query = "SELECT id_pc,DATEDIFF(NOW(),tgl_terakhir) AS perbedaan_hari,DAYOFWEEK(tgl_terakhir) AS hari_terakhir FROM data_pc WHERE DATEDIFF(NOW(),tgl_terakhir) > 30 ORDER BY RAND();";
 	$data = $this->connect -> query($query);
 		$row = mysqli_num_rows($data);
 
@@ -81,9 +123,9 @@ public function deleteHasilGenetik(){
 
 }
 
-public function saveHasilGenetik($id_pc,$fitness){
-	$query = "INSERT INTO hasil_genetik (id_pc,kode_inventori,id_dept,tgl_terakhir,fitness)
-			SELECT id_pc,kode_inventori,id_dept,tgl_terakhir,$fitness FROM data_pc WHERE id_pc = $id_pc;";
+public function saveHasilGenetik($id_pc,$weekday,$fitness){
+	$query = "INSERT INTO hasil_genetik (id_pc,weekday,kode_inventori,id_dept,tgl_terakhir,fitness)
+			SELECT id_pc,$weekday,kode_inventori,id_dept,tgl_terakhir,$fitness FROM data_pc WHERE id_pc = $id_pc;";
 	$data = $this->connect -> query($query);
 	if($data){
 		return true;
@@ -94,7 +136,8 @@ public function saveHasilGenetik($id_pc,$fitness){
 }
 
 public function getHasilGenetik(){
-	$query = "SELECT h.id_pc,h.kode_inventori,d.nm_dept,h.tgl_terakhir,h.fitness FROM hasil_genetik h JOIN department d ON h.id_dept = d.id_dept ";
+	//UPDATE data_pc SET tgl_terakhir = (SELECT timestamp('2019-05-30') - INTERVAL FLOOR( RAND( ) * 60) DAY);
+	$query = "SELECT h.id_pc,s.nama_hari as weekday,h.kode_inventori,d.nm_dept,h.tgl_terakhir,h.fitness FROM hasil_genetik h JOIN department d ON h.id_dept = d.id_dept JOIN slot_waktu s ON h.weekday = s.id_slot";
 	$data = $this->connect -> query($query);
 		$row = mysqli_num_rows($data);
 

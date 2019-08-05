@@ -123,6 +123,7 @@ class Population extends Individu
               $newSol->setGen($i,$data);
               }
               */
+              //exclude_key mengambil individu yang me
               $exclude_key = array();
               $exclude_value = array();
              foreach ($pop->individu as $key => $value) {
@@ -139,6 +140,7 @@ class Population extends Individu
               
               
             }
+            //mengambil individu random dari populasi
        // var_dump($n);
         return $n;
     }
@@ -190,7 +192,7 @@ for ($i = $elitismOffset; $i < $pop->size(); $i++){
          //echo '</br>';
             //var_dump($pop->fitness);
             // echo '</br>';
-          $mutate_key =  array_search(array_keys($pop->individu, max($pop->fitness)),$pop->fitness);
+          //$mutate_key =  array_search(array_keys($pop->individu, max($pop->fitness)),$pop->fitness);
           $mutate_value = array_search($newMutate,$pop->indivPool);
           $mutate_value = $pop->indivPool[$mutate_value];
           $randomDay = rand(1, 6);

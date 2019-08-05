@@ -38,7 +38,8 @@ require_once('individual.php');  //supporting class file
             $fit = new Fitnesscalc();
             $split = explode('|', $value);
             $ds = $key;
-
+            //$split[1] = selisih dari
+            //$jml_beda = jumlah selisih hari dalam populasi
             $hitung_fitness = 1/1+(($split[1]/$jml_beda) * ($split[3]-$array_idhari[$ds]));
 
             

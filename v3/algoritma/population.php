@@ -94,9 +94,12 @@ class Population extends Individu
             // Crossover at which point 0..1 , .50 50% of time
             if (Population::random() <= Population::$uniformRate){
 			       //  $randomId = rand(0, $pop->size()-1 ); 
+            	//debug crossover
               // echo '</br>';
               // echo "crossover individu index ".$keyIndiv1;print_r($a);echo " dengan individu index ".$keyIndiv2;print_r($b);
-               //echo '</br>';
+              // echo '</br>';
+
+               //end of debug crossover
                 $newSol->setGen($keyIndiv1, $a );
             } else {
                 $newSol->setGen($keyIndiv2, $b );
@@ -200,9 +203,14 @@ for ($i = $elitismOffset; $i < $pop->size(); $i++){
           $a = explode('|', $mutate_value);
           array_push($a, $randomDay);
           $data = implode('|', $a);
-         // echo '</br>';
-               //echo "individu mutasi index ".$randomId." menjadi ";print_r($data);
-            // echo '</br>';
+          //debug mutasi
+
+
+         //echo '</br>';
+            //   echo "individu mutasi index ".$i." menjadi ";print_r($data);
+          //   echo '</br>';
+          
+          //end of debug mutasi
              //var_dump($mutate_value);
           //$array_mutate = array();
          // array_push($array_mutate, $data);
@@ -221,6 +229,8 @@ for ($i = $elitismOffset; $i < $pop->size(); $i++){
     }//end of func evolve
 
 }//end of class
+
+//debug population
 /*
 $coba = new Population(Population::$popSize,true);
 $post = $coba->individu;
@@ -250,9 +260,9 @@ foreach ($get as $key => $value) {
     $myPop->setFitness($key,$value);
 }
 $maks_fitness = max($myPop->fitness);
-var_dump($maks_fitness);
+echo "Maks Fitness : ";var_dump($maks_fitness);
 $k++;
-echo "putaran ke ".$k;
+echo "Putaran generasi ke ".$k;
 if ( $k > Population::$maxiteration)
       {
         echo "\n-- Ending TOO MANY (".Population::$maxiteration.") stagnant generations unchanged. Ending APPROX solution below \n..)";
@@ -262,9 +272,10 @@ if ( $k > Population::$maxiteration)
 echo '</br>';
 foreach ($myPop->individu as $key => $value) {
 
-  echo "HASIL AKHIR individu ".$value. '=  punya nilai fitness '.$myPop->fitness[$key].'</br>';
+  echo "\n-- Mencapai batas (".Population::$maxiteration.") iterasi \n..)";
 
 }
 echo "FiNISSSHH";
 */
+//end of debug
 ?>

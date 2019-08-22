@@ -25,40 +25,46 @@ while ($maks_fitness >= 1.2) {
     //array_push($one, $myPop->individu[0]);
     //$fit->getFitness($one);
  //   var_dump($myPop);
-//echo "</br>";echo "</br>";
+
 $get = $fit->getFitness($myPop->individu) ;
 foreach ($get as $key => $value) {
     $myPop->setFitness($key,$value);
 }
 $maks_fitness = max($myPop->fitness);
-//var_dump($maks_fitness);
 $k++;
-//echo "</br>";
-//echo "putaran ke ".$k;
-//echo "</br>";
+//debug maks fitness
+echo "</br>";echo "</br>";
+echo "Maks Fitness : ";var_dump($maks_fitness);
+echo "Putaran generasi ke ".$k;
+//echo '</br>';
+
+//end of debug maks
 if ( $k > Population::$maxiteration)
       {
-        echo "\n-- Mencapai batas (".Population::$maxiteration.") iterasi \n..)";
+        echo "\n-- Mencapai batas (".Population::$maxiteration.") iterasi \n..)";echo '</br>';
           break;
       }
 }
-echo '</br>';
-echo "Putaran generasi ke ".$k;
-echo '</br>';
+
 $saveData = new Database();
 //Hapus terlebih dahulu solusi lama
 $saveData->deleteHasilGenetik();
 foreach ($myPop->individu as $key => $value) {
 
-  //echo "HASIL AKHIR individu ".$value. '=  punya nilai fitness '.$myPop->fitness[$key].'</br>';
+//debug
+
+  echo "HASIL AKHIR individu ".$value. '=  punya nilai fitness '.$myPop->fitness[$key].'</br>';
+
   $split = explode('|', $value);
-  $save = $saveData->saveHasilGenetik($split[0],$key,$myPop->fitness[$key]);
+  $save = $saveData->saveHasilGenetik($split[0],$key+1,$myPop->fitness[$key]);
 
 	}
-	?>php
+	?>
+
 	
 <script type="text/javascript">alert('Data Telah Di Update'); window.location = 'lihat_jadwal.php';</script>
-?>
+
+
 <?php
 }
 $tampilData = new Database();
